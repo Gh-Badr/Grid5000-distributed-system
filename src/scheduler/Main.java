@@ -1,41 +1,34 @@
 package scheduler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        scheduler.LocalScheduler scheduler = new scheduler.LocalScheduler();
+        LocalScheduler scheduler = new LocalScheduler();
 
-        Task t1 = new Task("T1");
-        Task t2 = new Task("T2");
-        Task t3 = new Task("T3");
-        Task t4 = new Task("T4");
-        Task t5 = new Task("T5");
-        Task t6 = new Task("T6");
-        Task t7 = new Task("T7");
-        Task t8 = new Task("T8");
-        Task t9 = new Task("T9");
+        Node n1 = new Node("T1", List.of("CommandA", "CommandB"));
+        Node n2 = new Node("T2", List.of("CommandC"));
+        Node n3 = new Node("T3", List.of("CommandD", "CommandE"));
+        Node n4 = new Node("T4", List.of("CommandF"));
+        Node n5 = new Node("T5", new ArrayList<>());
+        Node n6 = new Node("T6", List.of("CommandG"));
+        Node n7 = new Node("T7", List.of("CommandH", "CommandI","CommandJ"));
 
-        t1.addDependency("T2");
-        t1.addDependency("T3");
-        t1.addDependency("T4");
-        t2.addDependency("T5");
-        t3.addDependency("T6");
-        t3.addDependency("T7");
-        t4.addDependency("T8");
-        t8.addDependency("T9");
-        t5.addDependency("T9");
-        t6.addDependency("T9");
-        t7.addDependency("T9");
+        Map<Node, List<Node>> dependencies = new HashMap<>();
+        dependencies.put(n1, List.of(n2, n3,n4)); // n1 -> n2, n3 and n4
+        dependencies.put(n3, List.of(n5,n6)); // n3 -> n5 et n6
+        dependencies.put(n2, List.of(n7)); // n2 -> n7
+        dependencies.put(n4, List.of(n7)); // n4 -> n7
+        dependencies.put(n5, List.of(n7)); // n5 -> n7
+        dependencies.put(n6, new ArrayList<>()); // n6 -> n7
+        dependencies.put(n7, new ArrayList<>()); // n7 depends on nothing
 
-        scheduler.addTask(t1);
-        scheduler.addTask(t2);
-        scheduler.addTask(t3);
-        scheduler.addTask(t4);
-        scheduler.addTask(t5);
-        scheduler.addTask(t6);
-        scheduler.addTask(t7);
-        scheduler.addTask(t8);
-        scheduler.addTask(t9);
-
+        for (Map.Entry<Node, List<Node>> entry : dependencies.entrySet()) {
+            scheduler.addNode(entry.getKey(), entry.getValue());
+        }
         scheduler.executeTasks();
     }
 }
