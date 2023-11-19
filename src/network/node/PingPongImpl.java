@@ -1,6 +1,7 @@
 package network.node;
 
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,16 +14,30 @@ public class PingPongImpl extends UnicastRemoteObject implements PingPongInterfa
     }
 
     @Override
-    public String ping(String message) throws RemoteException {
-        return "Node received: " + message;
+    public String ping(String command) throws RemoteException {
+        return "Node received: " + command;
     }
 
     @Override
     public int executeCommand(String command) throws RemoteException {
         try {
-            Process process = Runtime.getRuntime().exec("cmd /c " + command);
+            Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", command});
+
+            // Capture the standard output and error streams
+            BufferedReader outputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
             int exitCode = process.waitFor();
+
+            // Print the standard output
+            System.out.println("Standard Output:");
+            outputReader.lines().forEach(System.out::println);
+
+            // Print the standard error
+            System.out.println("Standard Error:");
+            errorReader.lines().forEach(System.out::println);
+
+
             // Print the result
             if (exitCode == 0) {
                 System.out.println("Command executed successfully: " + command);
