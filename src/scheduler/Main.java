@@ -9,13 +9,13 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         LocalScheduler scheduler = new LocalScheduler();
 
-        Node n1 = new Node("T1", List.of("CommandA", "CommandB"));
-        Node n2 = new Node("T2", List.of("CommandC"));
-        Node n3 = new Node("T3", List.of("CommandD", "CommandE"));
-        Node n4 = new Node("T4", List.of("CommandF"));
+        Node n1 = new Node("T1", List.of("touch CommandA.txt", "touch CommandB.txt"));
+        Node n2 = new Node("T2", List.of("touch CommandC.txt"));
+        Node n3 = new Node("T3", List.of("touch CommandD.txt", "touch CommandE.txt"));
+        Node n4 = new Node("T4", List.of("touch CommandF.txt"));
         Node n5 = new Node("T5", new ArrayList<>());
-        Node n6 = new Node("T6", List.of("CommandG"));
-        Node n7 = new Node("T7", List.of("CommandH", "CommandI","CommandJ"));
+        Node n6 = new Node("T6", List.of("touch CommandG.txt"));
+        Node n7 = new Node("T7", List.of("touch CommandH.txt", "touch CommandI.txt","touch CommandJ.txt"));
 
         Map<Node, List<Node>> dependencies = new HashMap<>();
         dependencies.put(n1, List.of(n2, n3,n4)); // n1 -> n2, n3 and n4
