@@ -1,3 +1,5 @@
+package parser;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,7 +7,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
-
+import java.io.File;
 
 public class MakefileParser {
     private TSymCour SymboleCourant = new TSymCour();
@@ -14,35 +16,33 @@ public class MakefileParser {
     private int currentIndex;
     private boolean erreur = false;
     private boolean start = false;
-    private Map<Node, List<String>> Graph ;
+    private HashMap<Node, List<String>> graph ;
+    private HashMap<Node, List<Node>> NewGraph ;
     private Node keyNode;
     private List<String> valueNodes ;
 
     public static void main(String[] args) {
-        MakefileParser parser = new MakefileParser(); // Création d'une instance de MakefileParser
-        Map<Node, List<String>> result = parser.processFile("MakeFile.txt");
+        MakefileParser parser = new MakefileParser(); 
+        HashMap<Node, List<Node>> result = parser.processFile("MakeFile.txt");
     }
 
-    public Map<Node, List<String>> processFile(String filePath) {
+    public HashMap<Node, List<Node>> processFile(String filePath) {
         try  {
             reader = new BufferedReader(new FileReader(filePath));
             currentLine = reader.readLine();
             currentIndex = 0;
-            Graph = new HashMap<>();
-
-            
-
+            graph = new HashMap<>();
+            NewGraph = new HashMap();
             while (currentLine != null) {
                 while (currentIndex <= currentLine.length()) {
-                    Graph = PROGRAM();
+                    NewGraph = PROGRAM();
                     if (currentLine == null) { break ;}
                 }
-            }
-            
+            } 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Graph ;
+        return NewGraph ;
     }
 
     private void Erreur(CODES_LEX code){
@@ -59,23 +59,75 @@ public class MakefileParser {
         }
     }
 
-    private Map<Node, List<String>> PROGRAM(){
+    public boolean checkFileExistence(String filePath) {
+        File file = new File(filePath);
+        return file.exists() && file.isFile();
+    }
+
+    private HashMap<Node, List<Node>> PROGRAM(){
         Rules();
         if (!erreur){
             System.out.println("Fin du makefile.");
         } else {
-            System.out.println("Une erreur s'est produite");
+            throw new RuntimeException("Une erreur syntaxique s'est produite.");
         }
-        for (Map.Entry<Node, List<String>> entry : Graph.entrySet()) {
+
+        StringBuilder concatenatedNodeNames = new StringBuilder();
+        for (Node node : graph.keySet()) {
+            concatenatedNodeNames.append(node.getNodeName());
+        }
+
+        //transformation des String en Node
+
+        boolean isFile ;
+        for (Map.Entry<Node, List<String>> entry : graph.entrySet()) {
             Node keyNode = entry.getKey();
-            List<String> valueNodes = entry.getValue();
+            List<String> dependencies = entry.getValue();
+            List<Node> dependencyNodes = new ArrayList<>();
+            for (String dependency : dependencies) {
+                isFile = true ;
+                for (Map.Entry<Node, List<String>> entry2 : graph.entrySet()) {
+                    Node keyNode2 = entry2.getKey();
+                    if(keyNode2.getNodeName().equals(dependency)){
+                        dependencyNodes.add(keyNode2);
+                        isFile = false ;
+                        break;
+                    } 
+                }
+                if(isFile == true){
+                    Node Nodefile = new Node(dependency);
+                    Nodefile.setIsFile(true);
+                    dependencyNodes.add(Nodefile);
+                }
+            }
+            NewGraph.put(keyNode, dependencyNodes);     
+        }
+
+        //Affichage Graphe
+        for (Map.Entry<Node, List<Node>> pairs : NewGraph.entrySet()) {
+            Node keyNode = pairs.getKey();
+            List<Node> valueNodes = pairs.getValue();
             System.out.println("keyNode : " + keyNode + " - List : "+ valueNodes);
         }
-        return Graph ;
+                
+        //Vérification si tous les fichiers évoqué dans le MakeFile sont bien présent
+        for (Map.Entry<Node, List<Node>> pairs : NewGraph.entrySet()) {
+            List<Node> valueNodes = pairs.getValue();
+            for (Node node : valueNodes){
+                if(node.getIsFile()==true){
+                    String filePathToCheck = node.getNodeName();
+                    boolean fileExists = checkFileExistence(filePathToCheck);
+                    if (!fileExists) {
+                        throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());
+                    }
+                }
+            }
+        }
+        
+        return NewGraph ;
     }
 
     private void Rules(){
-        
         Rule();
         if(currentLine != null) {
             Rules();
@@ -91,7 +143,7 @@ public class MakefileParser {
         Dependencies();
         Commandes();
         //System.out.println("keyNode : " + keyNode + " - List : "+ valueNodes);
-        Graph.put(keyNode, valueNodes);
+        graph.put(keyNode, valueNodes);
     }
 
     private void Target(){

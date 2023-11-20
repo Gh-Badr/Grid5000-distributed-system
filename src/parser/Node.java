@@ -1,3 +1,5 @@
+package parser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,6 +7,7 @@ public class Node {
 
     private String nodeName;
     private List<String> commands;
+    private boolean isFile = false;
 
     public Node(){
         this.commands = new ArrayList<>();
@@ -19,8 +22,16 @@ public class Node {
         return nodeName;
     }
 
+    public boolean getIsFile(){
+        return isFile;
+    }
+
     public void setNodeName(String nodeName) {
         this.nodeName = nodeName;
+    }
+
+    public void setIsFile(boolean bool){
+        this.isFile = bool ;
     }
 
     public List<String> getCommands() {
