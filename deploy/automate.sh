@@ -8,7 +8,7 @@ javac -cp bin -d bin scheduler/*.java
 
 # Submit the job and get the job ID
 # oarsub -l host=5,walltime=0:10 "./deploy/master.sh > master_output.log 2>&1"
-oarsub -l host=2,walltime=0:10 "./deploy/runner.sh > master_output.log 2>&1"
+oarsub -l host=5,walltime=0:10 "./deploy/runner.sh > master_output.log 2>&1"
 echo "hello I'm frontend"
 
 

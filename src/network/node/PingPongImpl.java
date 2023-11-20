@@ -14,8 +14,8 @@ public class PingPongImpl extends UnicastRemoteObject implements PingPongInterfa
     }
 
     @Override
-    public String ping(String command) throws RemoteException {
-        return "Node received: " + command;
+    public String ping(String command, String host) throws RemoteException {
+        return "Node " + host + " received: " + command;
     }
 
     @Override
