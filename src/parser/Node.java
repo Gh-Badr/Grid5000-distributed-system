@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
+import network.master.Master;
+import hosts.*;
+
+
 public class Node {
     private String nodeName;
     private List<String> commands;
@@ -32,13 +36,39 @@ public class Node {
             for (String command : commands) {
                 System.out.println("Executing command: " + command);
                 // Simulate command execution
+
+                String[] arguments=new String[0];
+                Host thisHost=null;
+
+
+                for (Host host : RetrieveHosts.hosts) {
+                    System.out.println(host.hostname);
+                    if (host.status == HostStatus.FREE) {
+                        thisHost = host;
+                        arguments = new String[]{command, thisHost.hostname};
+                        thisHost.status = HostStatus.OCCUPIED;
+                        break;
+                    }
+                }
+
+                int responseCode = Master.master(arguments);
+
+                //sleep a random time, to be updated later
                 Random random = new Random();
                 int randomNumber = random.nextInt(2001) + 1000;
                 Thread.sleep(randomNumber);
+
+                if(responseCode==0){
+                    thisHost.status = HostStatus.FREE;
+                }else{
+                    throw new RuntimeException("ABORT ! Task failed.");
+                }
             }
+
             this.status = TaskStatus.FINISHED;
-            System.out.println("nodeName completed: " + nodeName);
-        } catch (InterruptedException e) {
+            System.out.println("Target completed: " + nodeName);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
