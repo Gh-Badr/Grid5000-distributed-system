@@ -1,9 +1,9 @@
-package scheduler;
+package hosts;
 
 public class Host {
 
-    String hostname;
-    HostStatus status;
+    public String hostname;
+    public HostStatus status;
 
     Host(String hostname) {
         this.hostname = hostname;

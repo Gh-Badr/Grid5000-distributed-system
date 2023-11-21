@@ -1,4 +1,4 @@
-package scheduler;
+package hosts;
 
 public enum HostStatus {
     FREE,
