@@ -1,4 +1,4 @@
-package scheduler;
+package parser;
 
 public enum TaskStatus {
     NOT_STARTED,

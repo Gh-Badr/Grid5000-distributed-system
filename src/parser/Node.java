@@ -1,21 +1,46 @@
 package parser;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class Node {
-
     private String nodeName;
     private List<String> commands;
+    public TaskStatus status;
     private boolean isFile = false;
+
+    public Node(String nodeName, List<String> commands) {
+        this.nodeName = nodeName;
+        this.commands = commands;
+        this.status = TaskStatus.NOT_STARTED;
+    }
 
     public Node(){
         this.commands = new ArrayList<>();
+        this.status = TaskStatus.NOT_STARTED;
     }
 
     public Node(String nodeName) {
         this.nodeName = nodeName;
         this.commands = new ArrayList<>();
+        this.status = TaskStatus.NOT_STARTED;
+    }
+    public void execute() {
+        try {
+            System.out.println("Executing commands for nodeName: " + nodeName);
+            for (String command : commands) {
+                System.out.println("Executing command: " + command);
+                // Simulate command execution
+                Random random = new Random();
+                int randomNumber = random.nextInt(2001) + 1000;
+                Thread.sleep(randomNumber);
+            }
+            this.status = TaskStatus.FINISHED;
+            System.out.println("nodeName completed: " + nodeName);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getNodeName() {
@@ -48,6 +73,14 @@ public class Node {
 
     public void clearCommands() {
         commands.clear();
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override

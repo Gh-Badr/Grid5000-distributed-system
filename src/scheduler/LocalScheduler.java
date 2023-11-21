@@ -1,5 +1,8 @@
 package scheduler;
 
+import parser.Node;
+import parser.TaskStatus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +23,9 @@ public class LocalScheduler {
         while (!allTasksCompleted()) {
             for (Map.Entry<Node, List<Node>> entry : graph.entrySet()) {
                 Node node = entry.getKey();
+//                System.out.println(node.getStatus());
                 if (canBeExecuted(node)) {
-                    node.setStatus(TaskStatus.IN_PROGRESS);
+                    node.status = TaskStatus.IN_PROGRESS;
                     executor.submit(node::execute);
                 }
             }
@@ -32,13 +36,13 @@ public class LocalScheduler {
     }
 
     boolean allTasksCompleted() {
-        return graph.keySet().stream().allMatch(n -> n.getStatus() == TaskStatus.FINISHED);
+        return graph.keySet().stream().allMatch(n -> n.status == TaskStatus.FINISHED);
     }
 
     boolean canBeExecuted(Node node) {
-        if (node.getStatus() != TaskStatus.NOT_STARTED) {
+        if (node.status != TaskStatus.NOT_STARTED) {
             return false;
         }
-        return graph.get(node).stream().allMatch(dep -> dep.getStatus() == TaskStatus.FINISHED);
+        return graph.get(node).stream().allMatch(dep -> dep.status == TaskStatus.FINISHED);
     }
 }
