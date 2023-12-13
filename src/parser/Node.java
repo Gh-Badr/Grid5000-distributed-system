@@ -32,8 +32,12 @@ public class Node {
     }
     public void execute() {
         try {
-            System.out.println("Executing commands for nodeName: " + nodeName);
             for (String command : commands) {
+                if(this.isFile){
+                    System.out.println("Sending file: " + nodeName);
+                    commands.add("scp ~/files/"+this.nodeName+" toBeTransfered");
+                }
+                else System.out.println("Executing commands for nodeName: " + nodeName);
                 System.out.println("Executing command: " + command);
                 // Simulate command execution
 
