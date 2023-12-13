@@ -15,7 +15,8 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        RetrieveHosts.retreiveHosts();
+        // RetrieveHosts.retreiveHosts();
+        RetrieveHosts.retreiveHostsFromList(args[0]);
         LocalScheduler scheduler = new LocalScheduler();
 
         MakefileParser parser = new MakefileParser();
