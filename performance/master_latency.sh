@@ -7,7 +7,6 @@ HOSTNAMES=$(uniq $OAR_NODEFILE)
 MASTER_NODE=$(hostname)
 echo $(hostname)
 
-
 # Run the Node class on other nodes
 for hostname in $HOSTNAMES; do
     if [ "$hostname" != "$MASTER_NODE" ]; then
@@ -24,4 +23,3 @@ for hostname in $HOSTNAMES; do
         ./performance/pingpong_latency.sh $hostname
     fi
 done
-

@@ -3,7 +3,6 @@
 # Set the host names for Node
 NODE_HOST="$1"
 
-
 # Run the Master and measure latency
 START_TIME=$(date +%s%N) # Start time in nanoseconds
 java -cp bin network.master.Master "touch ~/file_$NODE_HOST.txt" $NODE_HOST &
