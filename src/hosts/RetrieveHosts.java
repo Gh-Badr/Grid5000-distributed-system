@@ -45,6 +45,18 @@ public class RetrieveHosts {
 
     }
 
+    public static void retreiveHostsFromList(String hostsList) {
+
+        // Remove the brackets, quotes, and split the string
+        String[] hostNames = hostsList.replaceAll("[\\[\\]'\"]", "").split(",");
+
+        // Add trimmed host names to the list
+        for (String hostName : hostNames) {
+            hosts.add(new Host(hostName.trim()));
+        }
+        
+    }
+
 
 
 

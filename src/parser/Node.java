@@ -40,16 +40,23 @@ public class Node {
                 String[] arguments=new String[0];
                 Host thisHost=null;
 
+                int n = (RetrieveHosts.hosts).size();
+                int i = n;
 
-                for (Host host : RetrieveHosts.hosts) {
-                    System.out.println(host.hostname);
-                    if (host.status == HostStatus.FREE) {
-                        thisHost = host;
-                        arguments = new String[]{command, thisHost.hostname};
-                        thisHost.status = HostStatus.OCCUPIED;
-                        break;
+                while (i == n) {
+                    i = 0;
+                    for (Host host : RetrieveHosts.hosts) {
+                        System.out.println(host.hostname);
+                        if (host.status == HostStatus.FREE) {
+                            thisHost = host;
+                            arguments = new String[]{command, thisHost.hostname};
+                            thisHost.status = HostStatus.OCCUPIED;
+                            break;
+                        }
+                        i++;
                     }
                 }
+
 
                 int responseCode = Master.master(arguments);
 

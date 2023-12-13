@@ -1,6 +1,12 @@
+file10.txt :
+	echo "This is file 10" > file10.txt
+file9.txt : file8.txt
+	echo "This is file 9" > file9.txt
+file8.txt : file7.txt
+	echo "This is file 8" > file8.txt
+file7.txt :
+	echo "This is file 6" > file6.txt
 file5.txt :
-		echo "This is file 5" > file5.txt
-file4.txt : file3.txt
-		echo "This is file 4" > file4.txt
+	echo "This is file 4" > file4.txt
 file3.txt :
-	    echo "This is file 3" > file3.txt
+	echo "This is file3" > file3.txt
