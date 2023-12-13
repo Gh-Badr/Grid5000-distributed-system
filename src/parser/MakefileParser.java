@@ -23,7 +23,7 @@ public class MakefileParser {
 
     public static void main(String[] args) {
         MakefileParser parser = new MakefileParser(); 
-        HashMap<Node, List<Node>> result = parser.processFile("MakeFile.txt");
+        HashMap<Node, List<Node>> result = parser.processFile("src/scheduler/MakeFile.txt");
     }
 
     public HashMap<Node, List<Node>> processFile(String filePath) {
@@ -94,10 +94,11 @@ public class MakefileParser {
                         break;
                     } 
                 }
-                if(isFile == true){
+                if(isFile){
                     Node Nodefile = new Node(dependency);
                     Nodefile.setIsFile(true);
                     dependencyNodes.add(Nodefile);
+                    NewGraph.put(Nodefile, new ArrayList<>());
                 }
             }
             NewGraph.put(keyNode, dependencyNodes);     
@@ -114,8 +115,8 @@ public class MakefileParser {
         for (Map.Entry<Node, List<Node>> pairs : NewGraph.entrySet()) {
             List<Node> valueNodes = pairs.getValue();
             for (Node node : valueNodes){
-                if(node.getIsFile()==true){
-                    String filePathToCheck = node.getNodeName();
+                if(node.getIsFile()){
+                    String filePathToCheck = "src/files/" +node.getNodeName();
                     boolean fileExists = checkFileExistence(filePathToCheck);
                     if (!fileExists) {
                         throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());
