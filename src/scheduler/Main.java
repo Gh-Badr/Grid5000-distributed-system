@@ -19,7 +19,7 @@ public class Main {
         LocalScheduler scheduler = new LocalScheduler();
 
         MakefileParser parser = new MakefileParser();
-        Map<Node,List<Node>> graph = parser.processFile("./scheduler/Makefile.txt");
+        Map<Node,List<Node>> graph = parser.processFile("src/scheduler/Makefile.txt");
 
         for (Map.Entry<Node, List<Node>> entry : graph.entrySet()) {
             scheduler.addNode(entry.getKey(), entry.getValue());
