@@ -1,6 +1,6 @@
-file5.txt :
+file5.txt : xyz hop
 		echo "This is file 5" > file5.txt
-file4.txt : file3.txt
+file4.txt : file3.txt hop
 		echo "This is file 4" > file4.txt
 file3.txt :
 	    echo "This is file 3" > file3.txt
