@@ -10,7 +10,7 @@ def calculer_moyenne(ville_data):
         count += 1
     return total / count if count > 0 else 0
 
-# Remplacez 'votre_fichier.txt' par le chemin complet de votre fichier d'entrée
+# Chemin complet du fichier d'entrée
 with open('C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/informations.txt', 'r') as fichier:
     lignes = fichier.readlines()
 
