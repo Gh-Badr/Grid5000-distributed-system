@@ -20,6 +20,6 @@ for hostname in $HOSTNAMES; do
     if [ "$hostname" != "$MASTER_NODE" ]; then
         file_name="${hostname}_file.txt"
         java -cp bin network.master.Master "touch ~/$file_name" $hostname &
-        ./performance/pingpong_latency.sh $hostname
+        # ./performance/pingpong_latency.sh $hostname
     fi
 done
