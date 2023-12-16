@@ -28,6 +28,24 @@ def get_assigned_nodes(api_url, job_id, auth):
     job_info = requests.get(api_url + f"/{job_id}", auth=auth).json()
     return job_info.get("assigned_nodes", [])
 
+def submit_and_initialize_job(site, nodes_per_site, walltime, command, g5k_auth):
+    api_job_url = f"https://api.grid5000.fr/stable/sites/{site}/jobs"
+    payload = {
+        "resources": f"nodes={nodes_per_site},walltime={walltime}",
+        "command": f"{command} > {site}_output.log 2>&1 "
+    }
+    job_id = submit_job(api_job_url, payload, g5k_auth)
+    print(f"Job submitted at {site} ({job_id})")
+
+    max_wait_time = 30
+    check_interval = 1
+    wait_for_job_start(api_job_url, job_id, g5k_auth, max_wait_time, check_interval)
+
+    assigned_nodes = get_assigned_nodes(api_job_url, job_id, g5k_auth)
+    print(f"Assigned nodes at {site}: {', '.join(assigned_nodes)}")
+    
+    return job_id, assigned_nodes
+
 def check_and_delete_jobs(job_ids, auth):
     for site, job_id in job_ids:
         api_job_url = f"https://api.grid5000.fr/stable/sites/{site}/jobs"
