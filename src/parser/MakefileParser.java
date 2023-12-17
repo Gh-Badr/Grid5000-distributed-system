@@ -23,7 +23,7 @@ public class MakefileParser {
 
     public static void main(String[] args) {
         MakefileParser parser = new MakefileParser(); 
-        HashMap<Node, List<Node>> result = parser.processFile("MakeFile.txt");
+        HashMap<Node, List<Node>> result = parser.processFile("C:\\Users\\lenovo\\Desktop\\ENSIMAG\\SD\\Grid5000-distributed-system\\src\\scheduler\\Makefile");
     }
 
     public HashMap<Node, List<Node>> processFile(String filePath) {

@@ -3,12 +3,17 @@ package parser;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
+// import java.util.concurrent.locks.Lock;
+// import java.util.concurrent.locks.ReentrantLock;
 
 import network.master.Master;
 import hosts.*;
 
 
 public class Node {
+
+    // private static final Lock lock = new ReentrantLock();
+
     private String nodeName;
     private List<String> commands;
     public TaskStatus status;
@@ -31,6 +36,7 @@ public class Node {
         this.status = TaskStatus.NOT_STARTED;
     }
     public void execute() {
+        
         try {
             System.out.println("Executing commands for nodeName: " + nodeName);
             for (String command : commands) {
@@ -40,30 +46,40 @@ public class Node {
                 String[] arguments=new String[0];
                 Host thisHost=null;
 
+                
+
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
+                Random random = new Random();
 
+
+                // Node.lock.lock();
                 while (i == n) {
-                    i = 0;
-                    for (Host host : RetrieveHosts.hosts) {
-                        System.out.println(host.hostname);
-                        if (host.status == HostStatus.FREE) {
-                            thisHost = host;
-                            arguments = new String[]{command, thisHost.hostname};
-                            thisHost.status = HostStatus.OCCUPIED;
-                            break;
+                    synchronized(RetrieveHosts.hosts){
+                        i = 0;
+                        for (Host host : RetrieveHosts.hosts) {
+                            //System.out.println(host.hostname);
+                            if (host.status == HostStatus.FREE) {
+                                thisHost = host;
+                                arguments = new String[]{command, thisHost.hostname};
+                                thisHost.status = HostStatus.OCCUPIED;
+                                break;
+                            }
+                            i++;
                         }
-                        i++;
+                    }
+                    
+                    // If no host was free, consider waiting or retrying after a delay
+                    if (i == n) {
+                        Thread.sleep(random.nextInt(201) + 100); // someDelay is a delay in milliseconds
                     }
                 }
 
+                // Node.lock.unlock();
+
+
 
                 int responseCode = Master.master(arguments);
-
-                //sleep a random time, to be updated later
-                Random random = new Random();
-                int randomNumber = random.nextInt(2001) + 1000;
-                Thread.sleep(randomNumber);
 
                 if(responseCode==0){
                     thisHost.status = HostStatus.FREE;
