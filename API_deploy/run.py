@@ -8,11 +8,12 @@ password = getpass.getpass("Grid'5000 password (leave blank on frontends): ")
 g5k_auth = (user, password) if password else None
 
 # Reservation details
-workers = ["lyon","grenoble"]
+
+workers = ["luxembourg", "nancy", "rennes", "lyon"]
 # others : "strasbourg", "nantes", "sophia", "grenoble"
 master = "lille"
-nodes_per_site = 2
-walltime = "0:15"
+nodes_per_site = 1
+walltime = "0:05"
 
 # Initial workers files sending
 workers_source_paths = ["./src/network/node/"]

@@ -1,5 +1,5 @@
 .idea/
 bin/
-API_deploy/__pycache__/
 Grid5000-distributed-system.iml
 out/
+**/__pycache__/
