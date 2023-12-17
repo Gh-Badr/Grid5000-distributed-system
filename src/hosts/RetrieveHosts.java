@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 public class RetrieveHosts {
 
     public static List<Host> hosts = new ArrayList<>();
+    public static String masterName="five";
 
     public static void retreiveHosts() {
 
@@ -44,7 +45,6 @@ public class RetrieveHosts {
         }
 
     }
-
     public static void retreiveHostsFromList(String hostsList) {
 
         // Remove the brackets, quotes, and split the string
@@ -54,10 +54,10 @@ public class RetrieveHosts {
         for (String hostName : hostNames) {
             hosts.add(new Host(hostName.trim()));
         }
-        
+
     }
 
-
-
-
+    public static String getMasterName() {
+        return masterName;
+    }
 }
