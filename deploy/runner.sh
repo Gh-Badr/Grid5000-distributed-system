@@ -15,4 +15,6 @@ for hostname in $HOSTNAMES; do
     fi
 done
 
-java -cp bin scheduler.Main
+# java -cp bin scheduler.Main 
+HOSTLIST=$(echo "$HOSTNAMES" | grep -v "$MASTER_NODE" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
+java -cp bin scheduler.Main "[$HOSTLIST]"

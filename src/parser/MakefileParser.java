@@ -22,9 +22,10 @@ public class MakefileParser {
     private List<String> valueNodes ;
 
     public static void main(String[] args) {
-        MakefileParser parser = new MakefileParser();
-        HashMap<Node, List<Node>> result = parser.processFile("Makefile.txt");
-//        HashMap<Node, List<Node>> result = parser.processFile("C:\\Users\\marou\\Desktop\\Before\\Grid5000-distributed-system\\src\\scheduler\\Makefile.txt");
+        MakefileParser parser = new MakefileParser(); 
+        HashMap<Node, List<Node>> result = parser.processFile("C:\\Users\\lenovo\\Desktop\\ENSIMAG\\SD\\Grid5000-distributed-system\\src\\scheduler\\Makefile");
+        // HashMap<Node, List<Node>> result = parser.processFile("Makefile.txt");
+
     }
 
     public HashMap<Node, List<Node>> processFile(String filePath) {

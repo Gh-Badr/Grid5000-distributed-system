@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
+// import java.util.concurrent.locks.Lock;
+// import java.util.concurrent.locks.ReentrantLock;
 
 import network.master.Master;
 import hosts.*;
@@ -12,6 +14,9 @@ import scheduler.LocalScheduler;
 
 
 public class Node {
+
+    // private static final Lock lock = new ReentrantLock();
+
     private String nodeName;
     private List<String> commands;
     public TaskStatus status;
@@ -34,6 +39,7 @@ public class Node {
         this.status = TaskStatus.NOT_STARTED;
     }
     public void execute() {
+        
         try {
             for (String command : commands) {
                 System.out.println("Executing commands for nodeName: " + nodeName);
@@ -42,6 +48,7 @@ public class Node {
                 Host thisHost=null;
                 List<Host> hosts = new ArrayList<>();
                 Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
+
 
                 // Capture the output
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -52,30 +59,41 @@ public class Node {
                     hosts.add(new Host(line.trim()));
                 }
 //                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
+
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
+                Random random = new Random();
 
+
+                // Node.lock.lock();
                 while (i == n) {
-                    i = 0;
-                    for (Host host : RetrieveHosts.hosts) {
-                        System.out.println(host.hostname);
-                        if (host.status == HostStatus.FREE) {
-                            thisHost = host;
-                            arguments = new String[]{command, thisHost.hostname};
-                            thisHost.status = HostStatus.OCCUPIED;
-                            break;
+                    synchronized(RetrieveHosts.hosts){
+                        i = 0;
+                        for (Host host : RetrieveHosts.hosts) {
+                            //System.out.println(host.hostname);
+                            if (host.status == HostStatus.FREE) {
+                                thisHost = host;
+                                arguments = new String[]{command, thisHost.hostname};
+                                thisHost.status = HostStatus.OCCUPIED;
+                                break;
+                            }
+                            i++;
                         }
-                        i++;
+                    }
+                    
+                    // If no host was free, consider waiting or retrying after a delay
+                    if (i == n) {
+                        Thread.sleep(random.nextInt(201) + 100); // someDelay is a delay in milliseconds
                     }
                 }
 
+                // Node.lock.unlock();
 
                 int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
 
-                //sleep a random time, to be updated later
-                Random random = new Random();
-                int randomNumber = random.nextInt(2001) + 1000;
-                Thread.sleep(randomNumber);
+
+
+                int responseCode = Master.master(arguments);
 
                 if(responseCode==0){
                     thisHost.status = HostStatus.FREE;
