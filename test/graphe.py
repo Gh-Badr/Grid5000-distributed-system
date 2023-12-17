@@ -1,7 +1,7 @@
 import csv
 import matplotlib.pyplot as plt
 
-# Le chemin complet de votre fichier CSV
+# Le chemin complet du fichier CSV
 csv_file_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/results_sorted.csv'
 
 # Lire les données du fichier CSV

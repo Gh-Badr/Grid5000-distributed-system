@@ -33,7 +33,7 @@ moyennes_villes = {ville: calculer_moyenne(data) for ville, data in villes_data.
 # Trier les villes par moyenne de calcul de façon croissante
 villes_triees = sorted(moyennes_villes.items(), key=lambda x: x[1])
 
-# L'emplacement où on souhaite enregistrer le fichier CSV de sortie
+# L'emplacement où on va enregistrer le fichier CSV de sortie
 output_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/results_sorted.csv'
 
 # Écrire les résultats triés dans un fichier CSV
