@@ -22,6 +22,8 @@ public class Main {
         MakefileParser parser = new MakefileParser();
         Map<Node,List<Node>> graph = parser.processFile("./scheduler/Makefile.txt");
 
+        System.out.println("************* Starting Scheduler now *****************");
+
         for (Map.Entry<Node, List<Node>> entry : graph.entrySet()) {
             scheduler.addNode(entry.getKey(), entry.getValue());
         }

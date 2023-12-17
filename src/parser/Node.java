@@ -1,11 +1,14 @@
 package parser;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
 import network.master.Master;
 import hosts.*;
+import scheduler.LocalScheduler;
 
 
 public class Node {
@@ -32,14 +35,23 @@ public class Node {
     }
     public void execute() {
         try {
-            System.out.println("Executing commands for nodeName: " + nodeName);
             for (String command : commands) {
-                System.out.println("Executing command: " + command);
-                // Simulate command execution
+                System.out.println("Executing commands for nodeName: " + nodeName);
 
                 String[] arguments=new String[0];
                 Host thisHost=null;
+                List<Host> hosts = new ArrayList<>();
+                Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
 
+                // Capture the output
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                String line;
+                // Read each line and create Host objects
+                while ((line = reader.readLine()) != null) {
+                    hosts.add(new Host(line.trim()));
+                }
+//                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
 
@@ -58,7 +70,7 @@ public class Node {
                 }
 
 
-                int responseCode = Master.master(arguments);
+                int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
 
                 //sleep a random time, to be updated later
                 Random random = new Random();
@@ -118,6 +130,10 @@ public class Node {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public static boolean hasFileExtension(String fileName) {
+        return fileName.contains(".") && fileName.lastIndexOf('.') > 0;
     }
 
     @Override
