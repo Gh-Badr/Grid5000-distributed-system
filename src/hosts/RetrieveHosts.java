@@ -9,12 +9,11 @@ import java.io.InputStreamReader;
 public class RetrieveHosts {
 
     public static List<Host> hosts = new ArrayList<>();
-    public static String masterName="five";
 
     public static void retreiveHosts() {
 
         try {
-            Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
+            Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE | awk 'NR>1'"});
 
             // Capture the output
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -24,8 +23,6 @@ public class RetrieveHosts {
             while ((line = reader.readLine()) != null) {
                 hosts.add(new Host(line.trim()));
             }
-            masterName= (hosts.get(0)).hostname;
-            hosts.remove(0);
 
             // Wait for the process to complete
             int exitCode = process.waitFor();
@@ -47,12 +44,7 @@ public class RetrieveHosts {
         }
 
     }
-<<<<<<< Updated upstream
 
-
-
-
-=======
     public static void retreiveHostsFromList(String hostsList) {
 
         // Remove the brackets, quotes, and split the string
@@ -62,11 +54,10 @@ public class RetrieveHosts {
         for (String hostName : hostNames) {
             hosts.add(new Host(hostName.trim()));
         }
-        
+
     }
 
-    public static String getMasterName() {
-        return masterName;
-    }
->>>>>>> Stashed changes
+
+
+
 }

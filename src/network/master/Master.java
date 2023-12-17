@@ -4,10 +4,10 @@ import network.node.PingPongInterface;
 import parser.*;
 import scheduler.LocalScheduler;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.rmi.Naming;
 import java.util.List;
-
-import static hosts.RetrieveHosts.getMasterName;
 
 
 public class Master {
@@ -44,12 +44,31 @@ public class Master {
     }
 
     private static void getMessage(String command, String host) {
+        FileWriter fileWriter = null;
+        long startTime0 = System.nanoTime();
+        long endTime0 = System.nanoTime();
+        long latency0 = endTime0 - startTime0;
         try {
             PingPongInterface stub = (PingPongInterface) Naming.lookup("rmi://"+host+":3000/PingPongObject");
+            long startTime = System.nanoTime();
             String response = stub.ping(command,host);
+            long endTime = System.nanoTime();
+            long latency = endTime - startTime - latency0;
+            // Écriture dans le fichier CSV
+            fileWriter = new FileWriter("latency_optimized_results.csv", true); // 'true' pour append au fichier
+            fileWriter.write(host + "," + latency + "\n"); // Format CSV : host,latency
             System.out.println("Response => " + response);
+            System.out.println("Latency: " + latency + " nanoseconds");
         } catch (Exception e) {
             System.out.println("Master exception In Message Transmission : " + e);
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing FileWriter: " + e);
+                }
+            }
         }
     }
     private static void sendFile(String source,String destination, String target){

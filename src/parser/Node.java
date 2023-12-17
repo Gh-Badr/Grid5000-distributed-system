@@ -36,32 +36,13 @@ public class Node {
     public void execute() {
         try {
             for (String command : commands) {
-<<<<<<< Updated upstream
-                if(this.isFile){
-                    System.out.println("Sending file: " + nodeName);
-                    commands.add("scp ~/files/"+this.nodeName+" toBeTransfered");
-                }
-                else System.out.println("Executing commands for nodeName: " + nodeName);
-                System.out.println("Executing command: " + command);
-=======
                 System.out.println("Executing commands for nodeName: " + nodeName);
-//                List<Node> deps = LocalScheduler.graph.get(this);
-//                if(deps !=null){
-//                    for (Node dep : deps) {
-//                        if(hasFileExtension(dep.nodeName)) System.out.println("Ana rah fichier : "+dep.getNodeName());
-//                        else System.out.println(dep.getNodeName());
-//                    }
-//                }
->>>>>>> Stashed changes
-                // Simulate command execution
 
                 String[] arguments=new String[0];
                 Host thisHost=null;
                 List<Host> hosts = new ArrayList<>();
                 Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
 
-<<<<<<< Updated upstream
-=======
                 // Capture the output
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
@@ -73,24 +54,23 @@ public class Node {
                 System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
->>>>>>> Stashed changes
 
-                for (Host host : RetrieveHosts.hosts) {
-                    System.out.println(host.hostname);
-                    if (host.status == HostStatus.FREE) {
-                        thisHost = host;
-                        arguments = new String[]{command, thisHost.hostname};
-                        thisHost.status = HostStatus.OCCUPIED;
-                        break;
+                while (i == n) {
+                    i = 0;
+                    for (Host host : RetrieveHosts.hosts) {
+                        System.out.println(host.hostname);
+                        if (host.status == HostStatus.FREE) {
+                            thisHost = host;
+                            arguments = new String[]{command, thisHost.hostname};
+                            thisHost.status = HostStatus.OCCUPIED;
+                            break;
+                        }
+                        i++;
                     }
                 }
 
-<<<<<<< Updated upstream
-                int responseCode = Master.master(arguments);
-=======
 
                 int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
->>>>>>> Stashed changes
 
                 //sleep a random time, to be updated later
                 Random random = new Random();
