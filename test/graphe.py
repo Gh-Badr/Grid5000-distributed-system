@@ -2,7 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 
 # Le chemin complet de votre fichier CSV
-csv_file_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/moyennes_villes.csv'
+csv_file_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/results_sorted.csv'
 
 # Lire les données du fichier CSV
 villes = []
@@ -22,7 +22,7 @@ plt.bar(villes, moyennes, color=color, label='Barres')
 plt.plot(villes, moyennes, color='tab:red', marker='o', label='Lignes')
 plt.xlabel('Villes')
 plt.ylabel('Temps (ms)')
-plt.title('La moyenne de calcul par ville')
+plt.title('La moyenne de calcul par ville master')
 plt.xticks(rotation=45, ha='right')
 plt.legend()
 

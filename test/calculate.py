@@ -30,16 +30,19 @@ for ligne in lignes:
 # Calculer la moyenne pour chaque ville
 moyennes_villes = {ville: calculer_moyenne(data) for ville, data in villes_data.items()}
 
-#l'emplacement où on souhaite enregistrer le fichier CSV de sortie
-output_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/results.csv'
+# Trier les villes par moyenne de calcul de façon croissante
+villes_triees = sorted(moyennes_villes.items(), key=lambda x: x[1])
 
-# Écrire les résultats dans un fichier CSV
+# L'emplacement où on souhaite enregistrer le fichier CSV de sortie
+output_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/results_sorted.csv'
+
+# Écrire les résultats triés dans un fichier CSV
 with open(output_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     # Écrire l'en-tête du CSV
     writer.writerow(['Ville', 'Moyenne de Calcul'])
-    # Écrire les données
-    for ville, moyenne in moyennes_villes.items():
+    # Écrire les données triées
+    for ville, moyenne in villes_triees:
         writer.writerow([ville, moyenne])
 
 print(f"Le fichier '{output_path}' a été créé avec succès.")
