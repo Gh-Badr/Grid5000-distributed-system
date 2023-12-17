@@ -24,6 +24,7 @@ for ligne in lignes:
         current_ville = ligne.strip('-').strip()
     elif current_ville:
         nom_machine, valeur = ligne.strip().split(',')
+        current_ville = current_ville.rstrip('-').strip()
         villes_data[current_ville].append((nom_machine, valeur))
 
 # Calculer la moyenne pour chaque ville
