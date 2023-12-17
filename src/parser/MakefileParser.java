@@ -23,7 +23,12 @@ public class MakefileParser {
 
     public static void main(String[] args) {
         MakefileParser parser = new MakefileParser(); 
+<<<<<<< Updated upstream
         HashMap<Node, List<Node>> result = parser.processFile("src/scheduler/MakeFile.txt");
+=======
+        HashMap<Node, List<Node>> result = parser.processFile("Makefile.txt");
+//        HashMap<Node, List<Node>> result = parser.processFile("C:\\Users\\marou\\Desktop\\Before\\Grid5000-distributed-system\\src\\scheduler\\Makefile.txt");
+>>>>>>> Stashed changes
     }
 
     public HashMap<Node, List<Node>> processFile(String filePath) {
@@ -32,7 +37,7 @@ public class MakefileParser {
             currentLine = reader.readLine();
             currentIndex = 0;
             graph = new HashMap<>();
-            NewGraph = new HashMap();
+            NewGraph = new HashMap<>();
             while (currentLine != null) {
                 while (currentIndex <= currentLine.length()) {
                     NewGraph = PROGRAM();
@@ -115,9 +120,16 @@ public class MakefileParser {
         for (Map.Entry<Node, List<Node>> pairs : NewGraph.entrySet()) {
             List<Node> valueNodes = pairs.getValue();
             for (Node node : valueNodes){
+<<<<<<< Updated upstream
                 if(node.getIsFile()){
                     String filePathToCheck = "src/files/" +node.getNodeName();
                     boolean fileExists = checkFileExistence(filePathToCheck);
+=======
+                if(node.getIsFile()==true){
+                    String filePathToCheck = node.getNodeName();
+                    boolean fileExists = checkFileExistence("./parser/"+filePathToCheck);
+//                    boolean fileExists = checkFileExistence("C:\\Users\\marou\\Desktop\\Before\\Grid5000-distributed-system\\src\\parser\\premier.c");
+>>>>>>> Stashed changes
                     if (!fileExists) {
                         throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());
                     }

@@ -1,11 +1,14 @@
 package parser;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
 import network.master.Master;
 import hosts.*;
+import scheduler.LocalScheduler;
 
 
 public class Node {
@@ -33,17 +36,44 @@ public class Node {
     public void execute() {
         try {
             for (String command : commands) {
+<<<<<<< Updated upstream
                 if(this.isFile){
                     System.out.println("Sending file: " + nodeName);
                     commands.add("scp ~/files/"+this.nodeName+" toBeTransfered");
                 }
                 else System.out.println("Executing commands for nodeName: " + nodeName);
                 System.out.println("Executing command: " + command);
+=======
+                System.out.println("Executing commands for nodeName: " + nodeName);
+//                List<Node> deps = LocalScheduler.graph.get(this);
+//                if(deps !=null){
+//                    for (Node dep : deps) {
+//                        if(hasFileExtension(dep.nodeName)) System.out.println("Ana rah fichier : "+dep.getNodeName());
+//                        else System.out.println(dep.getNodeName());
+//                    }
+//                }
+>>>>>>> Stashed changes
                 // Simulate command execution
 
                 String[] arguments=new String[0];
                 Host thisHost=null;
+                List<Host> hosts = new ArrayList<>();
+                Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
 
+<<<<<<< Updated upstream
+=======
+                // Capture the output
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                String line;
+                // Read each line and create Host objects
+                while ((line = reader.readLine()) != null) {
+                    hosts.add(new Host(line.trim()));
+                }
+                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
+                int n = (RetrieveHosts.hosts).size();
+                int i = n;
+>>>>>>> Stashed changes
 
                 for (Host host : RetrieveHosts.hosts) {
                     System.out.println(host.hostname);
@@ -55,7 +85,12 @@ public class Node {
                     }
                 }
 
+<<<<<<< Updated upstream
                 int responseCode = Master.master(arguments);
+=======
+
+                int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
+>>>>>>> Stashed changes
 
                 //sleep a random time, to be updated later
                 Random random = new Random();
@@ -115,6 +150,10 @@ public class Node {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public static boolean hasFileExtension(String fileName) {
+        return fileName.contains(".") && fileName.lastIndexOf('.') > 0;
     }
 
     @Override

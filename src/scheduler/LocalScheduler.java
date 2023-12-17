@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class LocalScheduler {
-    Map<Node, List<Node>> graph = new HashMap<>();
+    public static Map<Node, List<Node>> graph = new HashMap<>();
 
     void addNode(Node node, List<Node> dependencies) {
         graph.put(node, dependencies);
