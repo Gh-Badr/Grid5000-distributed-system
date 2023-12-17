@@ -118,6 +118,7 @@ public class MakefileParser {
                 if(node.getIsFile()==true){
                     String filePathToCheck = node.getNodeName();
                     boolean fileExists = checkFileExistence("./parser/"+filePathToCheck);
+                    node.setStatus(TaskStatus.FINISHED);
                     if (!fileExists) {
                         throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());
                     }
@@ -316,7 +317,7 @@ public class MakefileParser {
                         SymboleCourant.setName(variable);
                     }
                     else {
-                        //si le symbole suivant est un COLON (:) alors il s'agit d'une cible 
+                        //si le symbole suivant est un COLON (:) alors il s'agit d'une cible
                         int index2 = index ;
                         boolean isColon = false ;
                         while (character != ':') {

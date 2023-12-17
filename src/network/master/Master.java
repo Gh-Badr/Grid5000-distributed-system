@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.util.List;
 
+import static hosts.RetrieveHosts.getMasterName;
+
 
 public class Master {
 
@@ -18,7 +20,8 @@ public class Master {
             List<Node> deps = LocalScheduler.graph.get(node);
             if(deps !=null){
                 for (Node dep : deps) {
-                    if(hasFileExtension(dep.getNodeName())) sendFile(master,host,dep.getNodeName());
+                    if(dep.getIsFile()) sendFile(master,host,"./parser/"+dep.getNodeName());
+                    else if(hasFileExtension(dep.getNodeName())) sendFile(master,host,dep.getNodeName());
                     else System.out.println(dep.getNodeName());
                 }
             }

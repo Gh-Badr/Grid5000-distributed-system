@@ -15,11 +15,12 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        RetrieveHosts.retreiveHosts();
+        // RetrieveHosts.retreiveHosts();
+        RetrieveHosts.retreiveHostsFromList(args[0]);
         LocalScheduler scheduler = new LocalScheduler();
 
         MakefileParser parser = new MakefileParser();
-        Map<Node,List<Node>> graph = parser.processFile("src/scheduler/Makefile.txt");
+        Map<Node,List<Node>> graph = parser.processFile("./scheduler/Makefile.txt");
 
         System.out.println("************* Starting Scheduler now *****************");
 

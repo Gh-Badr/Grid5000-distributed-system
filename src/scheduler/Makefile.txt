@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
-file5.txt : xyz hop
-		echo "This is file 5" > file5.txt
-file4.txt : file3.txt hop
-		echo "This is file 4" > file4.txt
-file3.txt :
-	    echo "This is file 3" > file3.txt
-=======
-file.txt : file1.txt file2.txt
-	echo $(( $(cat file1.txt) * $(cat file2.txt) )) > file.txt
+file.txt : file1.txt gold.txt file2.txt
+	echo $(( $(cat file1.txt) * $(cat file2.txt) + $(cat gold.txt))) > file.txt
 file1.txt :
 	echo "3" > file1.txt
+
 file2.txt:
 	echo "5" > file2.txt
->>>>>>> Stashed changes

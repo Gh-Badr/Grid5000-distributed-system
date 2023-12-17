@@ -51,7 +51,7 @@ public class Node {
                 while ((line = reader.readLine()) != null) {
                     hosts.add(new Host(line.trim()));
                 }
-                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
+//                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
 
