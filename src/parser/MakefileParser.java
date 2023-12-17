@@ -118,7 +118,7 @@ public class MakefileParser {
             for (Node node : valueNodes){
                 if(node.getIsFile()==true){
                     String filePathToCheck = node.getNodeName();
-                    boolean fileExists = checkFileExistence("./parser/"+filePathToCheck);
+                    boolean fileExists = checkFileExistence("./"+filePathToCheck);
                     node.setStatus(TaskStatus.FINISHED);
                     if (!fileExists) {
                         throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());

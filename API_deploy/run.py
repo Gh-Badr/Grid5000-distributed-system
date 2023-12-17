@@ -9,11 +9,11 @@ g5k_auth = (user, password) if password else None
 
 # Reservation details
 
-workers = ["luxembourg", "nancy", "rennes", "lyon"]
+workers = ["grenoble", "nancy", "rennes", "nantes", "luxembourg", "lyon"]
 # others : "strasbourg", "nantes", "sophia", "grenoble"
 master = "lille"
 nodes_per_site = 1
-walltime = "0:05"
+walltime = "0:20"
 
 # Initial workers files sending
 workers_source_paths = ["./src/network/node/"]
@@ -28,11 +28,6 @@ job_ids = []
 worker_command = "javac -d bin network/node/*.java && java -cp bin network.node.Node $(hostname)"
 assigned_workers = []
 
-# for site in workers:
-#     job_id, assigned_nodes = submit_and_initialize_job(site, nodes_per_site, walltime, worker_command, g5k_auth)
-#     job_ids.append((site, job_id))
-#     assigned_workers.extend(assigned_nodes)
-#     print(f"Assigned worker at {site}: {', '.join(assigned_nodes)}")
 
 # parallel submission of jobs
 def submit_single_job(site, nodes_per_site, walltime, command, auth):
@@ -53,7 +48,8 @@ custom_dir = ""
 process_site(user, master,master_source_paths,custom_dir)
 
 # submit Master job
-master_command = f'javac -cp bin -d bin -Xlint:unchecked hosts/*.java parser/*.java scheduler/*.java network/node/*.java network/master/*.java && java -cp bin scheduler.Main "{assigned_workers}"'
+
+master_command = f'javac -cp bin -d bin -Xlint:unchecked hosts/*.java parser/*.java scheduler/*.java network/node/*.java network/master/*.java && gcc scheduler/premier.c -o premier -lm && java -cp bin scheduler.Main "{assigned_workers}"'
 job_id, assigned_nodes = submit_and_initialize_job(master, nodes_per_site, walltime, master_command, g5k_auth)
 job_ids.append((master, job_id))
 print(f"Assigned master at {master}: {', '.join(assigned_nodes)}")

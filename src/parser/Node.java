@@ -91,10 +91,6 @@ public class Node {
 
                 int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
 
-
-
-                int responseCode = Master.master(arguments);
-
                 if(responseCode==0){
                     thisHost.status = HostStatus.FREE;
                 }else{

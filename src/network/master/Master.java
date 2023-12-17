@@ -14,13 +14,13 @@ import static hosts.RetrieveHosts.getMasterName;
 
 public class Master {
 
-    private static int executeACommand(String command,String host,String master,Node node){
+    private static int executeACommand(String command,String host,String master, Node node){
         int exitCode = -1;
         try {
             List<Node> deps = LocalScheduler.graph.get(node);
             if(deps !=null){
                 for (Node dep : deps) {
-                    if(dep.getIsFile()) sendFile(master,host,"./parser/"+dep.getNodeName());
+                    if(dep.getIsFile()) sendFile(master,host,"./"+dep.getNodeName());
                     else if(hasFileExtension(dep.getNodeName())) sendFile(master,host,dep.getNodeName());
                     else System.out.println(dep.getNodeName());
                 }
@@ -75,25 +75,25 @@ public class Master {
         }
     }
     private static void sendFile(String source,String destination, String target){
-        if(Node.hasFileExtension(target)){
+
 //            System.out.println("Sending " + source + " to " + destination + " using file "+target);
 //            String source = "petitprince-9.luxembourg.grid5000.fr:try.txt";
 //            String destination = "petitprince-11.luxembourg.grid5000.fr";
-            String command = "scp " + source + ":" + target + " " + destination + ":~";
-            System.out.println("+++++++++ "+command);
+        String command = "scp " + source + ":" + target + " " + destination + ":~";
+        System.out.println("+++++++++ "+command);
 
-            try {
-                Process process = Runtime.getRuntime().exec(command);
-                int exitCode = process.waitFor();
-                if (exitCode == 0) {
-                    System.out.println("File copied successfully");
-                } else {
-                    System.out.println("SCP failed with exit code " + exitCode);
-                }
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+        try {
+            Process process = Runtime.getRuntime().exec(command);
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("File copied successfully");
+            } else {
+                System.out.println("SCP failed with exit code " + exitCode);
             }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
+
     }
     public static boolean hasFileExtension(String fileName) {
         return fileName.contains(".") && fileName.lastIndexOf('.') > 0;
