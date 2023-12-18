@@ -43,13 +43,13 @@ with ThreadPoolExecutor(len(workers)) as executor:
             print(f"Assigned worker at {job_info[0]}: {', '.join(assigned_nodes)}")
 
 # Initial master files sending
-master_source_paths = ["./src/hosts/","./src/parser/","./src/scheduler/","./src/network/"]
+master_source_paths = ["./src/hosts/","./src/parser/","./src/scheduler/","./src/performance/","./src/network/"]
 custom_dir = ""
 process_site(user, master,master_source_paths,custom_dir)
 
 # submit Master job
 
-master_command = f'javac -cp bin -d bin -Xlint:unchecked hosts/*.java parser/*.java scheduler/*.java network/node/*.java network/master/*.java && gcc scheduler/premier.c -o premier -lm && java -cp bin scheduler.Main "{assigned_workers}"'
+master_command = f'javac -cp bin -d bin -Xlint:unchecked hosts/*.java parser/*.java scheduler/*.java network/node/*.java network/master/*.java performance/*.java && gcc scheduler/premier.c -o premier -lm && java -cp bin scheduler.Main "{assigned_workers}"'
 job_id, assigned_nodes = submit_and_initialize_job(master, nodes_per_site, walltime, master_command, g5k_auth)
 job_ids.append((master, job_id))
 print(f"Assigned master at {master}: {', '.join(assigned_nodes)}")
