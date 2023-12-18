@@ -9,8 +9,8 @@ g5k_auth = (user, password) if password else None
 
 # Reservation details
 site = "nancy"
-nodes_per_site = 5
-walltime = "0:20"
+nodes_per_site = 23
+walltime = "0:30"
 
 
 # Store job IDs for later deletion if necessary

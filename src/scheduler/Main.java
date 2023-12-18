@@ -47,6 +47,8 @@ public class Main {
             fileWriter = new FileWriter("scheduler_results.csv", true);
             fileWriter.write(schedulerDuration + "\n");
             System.out.println("Scheduler Execution time: " + schedulerDuration + " ms");
+            fileWriter.write((RetrieveHosts.hosts).size()+","+latency + "\n");  
+            System.out.println("HELLO");
         } catch (Exception e) {
             System.out.println("Master exception In Message Transmission : " + e);
         } finally {
