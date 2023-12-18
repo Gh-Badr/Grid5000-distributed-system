@@ -1,12 +1,7 @@
-file10.txt :
-	echo "This is file 10" > file10.txt
-file9.txt : file8.txt
-	echo "This is file 9" > file9.txt
-file8.txt : file7.txt
-	echo "This is file 8" > file8.txt
-file7.txt :
-	echo "This is file 6" > file6.txt
-file5.txt :
-	echo "This is file 4" > file4.txt
-file3.txt :
-	echo "This is file3" > file3.txt
+file.txt : file1.txt gold.txt file2.txt
+	echo $(( $(cat file1.txt) * $(cat file2.txt) + $(cat gold.txt))) > file.txt
+file1.txt :
+	echo "3" > file1.txt
+
+file2.txt:
+	echo "5" > file2.txt

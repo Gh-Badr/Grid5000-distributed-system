@@ -24,6 +24,8 @@ public class MakefileParser {
     public static void main(String[] args) {
         MakefileParser parser = new MakefileParser(); 
         HashMap<Node, List<Node>> result = parser.processFile("C:\\Users\\lenovo\\Desktop\\ENSIMAG\\SD\\Grid5000-distributed-system\\src\\scheduler\\Makefile");
+        // HashMap<Node, List<Node>> result = parser.processFile("Makefile.txt");
+
     }
 
     public HashMap<Node, List<Node>> processFile(String filePath) {
@@ -32,13 +34,13 @@ public class MakefileParser {
             currentLine = reader.readLine();
             currentIndex = 0;
             graph = new HashMap<>();
-            NewGraph = new HashMap();
+            NewGraph = new HashMap<>();
             while (currentLine != null) {
                 while (currentIndex <= currentLine.length()) {
                     NewGraph = PROGRAM();
                     if (currentLine == null) { break ;}
                 }
-            } 
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +94,7 @@ public class MakefileParser {
                         dependencyNodes.add(keyNode2);
                         isFile = false ;
                         break;
-                    } 
+                    }
                 }
                 if(isFile == true){
                     Node Nodefile = new Node(dependency);
@@ -100,7 +102,7 @@ public class MakefileParser {
                     dependencyNodes.add(Nodefile);
                 }
             }
-            NewGraph.put(keyNode, dependencyNodes);     
+            NewGraph.put(keyNode, dependencyNodes);
         }
 
         //Affichage Graphe
@@ -109,21 +111,22 @@ public class MakefileParser {
             List<Node> valueNodes = pairs.getValue();
             System.out.println("keyNode : " + keyNode + " - List : "+ valueNodes);
         }
-                
+
         //Vérification si tous les fichiers évoqué dans le MakeFile sont bien présent
         for (Map.Entry<Node, List<Node>> pairs : NewGraph.entrySet()) {
             List<Node> valueNodes = pairs.getValue();
             for (Node node : valueNodes){
                 if(node.getIsFile()==true){
                     String filePathToCheck = node.getNodeName();
-                    boolean fileExists = checkFileExistence(filePathToCheck);
+                    boolean fileExists = checkFileExistence("./parser/"+filePathToCheck);
+                    node.setStatus(TaskStatus.FINISHED);
                     if (!fileExists) {
                         throw new RuntimeException("Le fichier n'existe pas : " +  node.getNodeName());
                     }
                 }
             }
         }
-        
+
         return NewGraph ;
     }
 
@@ -132,8 +135,8 @@ public class MakefileParser {
         if(currentLine != null) {
             Rules();
         }
-        
-    }    
+
+    }
 
     private void Rule(){
         keyNode = new Node();
@@ -161,7 +164,7 @@ public class MakefileParser {
                 //System.out.println("TOKEN TARGET");
                 keyNode.setNodeName(SymboleCourant.getName());
                 nextToken();
-                break;     
+                break;
             default :
                 Erreur(CODES_LEX.TOKEN_TARGET);
                 nextToken();
@@ -178,7 +181,7 @@ public class MakefileParser {
                     nextToken();
                     if (SymboleCourant.getCode() == CODES_LEX.TOKEN_COMMA) {
                         //System.out.println("Comma: " + SymboleCourant.getCode());
-                        nextToken(); 
+                        nextToken();
                         //Test_Symbole(CODES_LEX.TOKEN_DEPENDENCIES);
                     }
                     break;
@@ -192,7 +195,7 @@ public class MakefileParser {
 
     private void Commandes() {
         switch (SymboleCourant.getCode()) {
-            case TOKEN_TAB : 
+            case TOKEN_TAB :
                 while (SymboleCourant.getCode() == CODES_LEX.TOKEN_TAB) {
                     nextToken();
                 }
@@ -205,60 +208,60 @@ public class MakefileParser {
             case TOKEN_TARGET :
                 break;
         }
-    }   
+    }
 
     private void nextToken() {
-    try {
-        if (currentLine != null) {
-            if ( currentIndex >= currentLine.length()) {
-                currentLine = reader.readLine();
-                SymboleCourant.setNewLine(true);
-                currentIndex = 0;
-                if (currentLine == null) {
-                    return; 
+        try {
+            if (currentLine != null) {
+                if ( currentIndex >= currentLine.length()) {
+                    currentLine = reader.readLine();
+                    SymboleCourant.setNewLine(true);
+                    currentIndex = 0;
+                    if (currentLine == null) {
+                        return;
+                    }
                 }
-            } 
-        } else {return ;}
+            } else {return ;}
 
-        char character = currentLine.charAt(currentIndex);
-        while (character == ' ') {
-            currentIndex++;
-            if (currentIndex >= currentLine.length()) {
-                return;
+            char character = currentLine.charAt(currentIndex);
+            while (character == ' ') {
+                currentIndex++;
+                if (currentIndex >= currentLine.length()) {
+                    return;
+                }
+                character = currentLine.charAt(currentIndex);
             }
-            character = currentLine.charAt(currentIndex);
-        }
-        Result result = processToken(character, currentLine, currentIndex);
-        //System.out.println(SymboleCourant.getCode());
+            Result result = processToken(character, currentLine, currentIndex);
+            //System.out.println(SymboleCourant.getCode());
 
-        //System.out.println("result : "+result.nextLine);
-        //System.out.println("The line here : "+currentLine);
-        if (result.nextLine) {
-            SymboleCourant.setNewLine(true);
-            String currentLine2 = reader.readLine();
-            if (currentLine2 != null) {
-               // System.out.println("saut de ligne");
-                currentLine = currentLine2;
-                currentIndex = 0;
+            //System.out.println("result : "+result.nextLine);
+            //System.out.println("The line here : "+currentLine);
+            if (result.nextLine) {
+                SymboleCourant.setNewLine(true);
+                String currentLine2 = reader.readLine();
+                if (currentLine2 != null) {
+                    // System.out.println("saut de ligne");
+                    currentLine = currentLine2;
+                    currentIndex = 0;
+                } else {
+                    currentLine = null ;
+                }
             } else {
-                currentLine = null ;
+                SymboleCourant.setNewLine(false);
+                //System.out.println("Pas de saut de ligne");
+                if(result.changeI != 0){
+                    currentIndex = result.changeI;
+                } else {
+                    currentIndex ++ ;
+                }
             }
-        } else {
-            SymboleCourant.setNewLine(false);
-            //System.out.println("Pas de saut de ligne");
-            if(result.changeI != 0){ 
-                currentIndex = result.changeI;
-            } else {
-                currentIndex ++ ;
-            }
-        }
-    
-        
 
-    } catch (IOException e) {
-        e.printStackTrace();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
 
     private Result processToken(char character, String line, int index) {
@@ -286,43 +289,43 @@ public class MakefileParser {
                 break;
             default:
                 String variable = "" ;
-                while (character != ':' && character != ' ' && character != ','   ) {                        
+                while (character != ':' && character != ' ' && character != ','   ) {
                     variable = String.format("%s%s", variable, character);
-                    index++; 
+                    index++;
                     if (index >= line.length()) {
-                        break; 
+                        break;
                     }
                     character = line.charAt(index);
                 }
 
                 //System.out.println("variable : " + variable);
 
-   
+
                 //Si le dernier symbole est une tabulation alors il s'agit d'une commande
                 if (SymboleCourant.getCode() == CODES_LEX.TOKEN_TAB) {
                     SymboleCourant.setCode(CODES_LEX.TOKEN_COMMAND);
                     String resultString = currentLine.replaceFirst("^\\t+", "");
                     keyNode.addCommand(resultString);
                     return new Result(true, true, index);
-                } else { 
+                } else {
                     //il s'agit donc soit d'une cible ou d'une dependance
                     //si le symbole précédant est un COLON (:) alors c'est une dépendance
                     if (SymboleCourant.getCode() == CODES_LEX.TOKEN_COLON && SymboleCourant.getNewLine() == false ||
-                     (SymboleCourant.getCode() == CODES_LEX.TOKEN_COMMA && SymboleCourant.getLastCode() == CODES_LEX.TOKEN_DEPENDENCIES) ||
-                     SymboleCourant.getCode() == CODES_LEX.TOKEN_DEPENDENCIES && SymboleCourant.getNewLine() == false
-                     ) {           
+                            (SymboleCourant.getCode() == CODES_LEX.TOKEN_COMMA && SymboleCourant.getLastCode() == CODES_LEX.TOKEN_DEPENDENCIES) ||
+                            SymboleCourant.getCode() == CODES_LEX.TOKEN_DEPENDENCIES && SymboleCourant.getNewLine() == false
+                    ) {
                         SymboleCourant.setCode(CODES_LEX.TOKEN_DEPENDENCIES);
                         SymboleCourant.setName(variable);
-                    } 
+                    }
                     else {
-                        //si le symbole suivant est un COLON (:) alors il s'agit d'une cible 
+                        //si le symbole suivant est un COLON (:) alors il s'agit d'une cible
                         int index2 = index ;
                         boolean isColon = false ;
-                        while (character != ':') {  
-                        //while (character != ':' && character != ' ') {                        
-                            index2++; 
+                        while (character != ':') {
+                            //while (character != ':' && character != ' ') {
+                            index2++;
                             if (index2 >= line.length()) {
-                                break; 
+                                break;
                             }
                             character = line.charAt(index2);
                         }
@@ -343,7 +346,7 @@ public class MakefileParser {
                         }
                     }
 
-                    
+
                     //character = line.charAt(index);
                     return new Result(true, false, index);
                 }

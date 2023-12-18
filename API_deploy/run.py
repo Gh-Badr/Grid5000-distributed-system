@@ -8,6 +8,7 @@ password = getpass.getpass("Grid'5000 password (leave blank on frontends): ")
 g5k_auth = (user, password) if password else None
 
 # Reservation details
+
 workers = ["luxembourg", "nancy", "rennes", "lyon"]
 # others : "strasbourg", "nantes", "sophia", "grenoble"
 master = "lille"
@@ -47,12 +48,12 @@ with ThreadPoolExecutor(len(workers)) as executor:
             print(f"Assigned worker at {job_info[0]}: {', '.join(assigned_nodes)}")
 
 # Initial master files sending
-master_source_paths = ["./src/network/","./src/hosts/","./src/parser/","./src/scheduler/"]
+master_source_paths = ["./src/hosts/","./src/parser/","./src/scheduler/","./src/network/"]
 custom_dir = ""
 process_site(user, master,master_source_paths,custom_dir)
 
 # submit Master job
-master_command = f'javac -d bin network/node/*.java && javac -cp bin -d bin network/master/Master.java && javac -cp bin -d bin hosts/*.java && javac -cp bin -d bin parser/*.java && javac -cp bin -d bin scheduler/*.java && java -cp bin scheduler.Main "{assigned_workers}"'
+master_command = f'javac -cp bin -d bin -Xlint:unchecked hosts/*.java parser/*.java scheduler/*.java network/node/*.java network/master/*.java && java -cp bin scheduler.Main "{assigned_workers}"'
 job_id, assigned_nodes = submit_and_initialize_job(master, nodes_per_site, walltime, master_command, g5k_auth)
 job_ids.append((master, job_id))
 print(f"Assigned master at {master}: {', '.join(assigned_nodes)}")
