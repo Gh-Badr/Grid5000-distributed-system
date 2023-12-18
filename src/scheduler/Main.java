@@ -1,34 +1,65 @@
 package scheduler;
 
+import parser.MakefileParser;
+import parser.Node;
+import hosts.RetrieveHosts;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+import static network.master.Master.logger;
 
 public class Main {
+
+
     public static void main(String[] args) throws InterruptedException {
+
+        FileWriter fileWriter = null;
+        long startTime0 = System.nanoTime();
+        long endTime0 = System.nanoTime();
+        long latency0 = endTime0 - startTime0;
+
+        long schedulerStartTime = System.nanoTime();
+        RetrieveHosts.retreiveHostsFromList(args[0]);
         LocalScheduler scheduler = new LocalScheduler();
 
-        Node n1 = new Node("T1", List.of("CommandA", "CommandB"));
-        Node n2 = new Node("T2", List.of("CommandC"));
-        Node n3 = new Node("T3", List.of("CommandD", "CommandE"));
-        Node n4 = new Node("T4", List.of("CommandF"));
-        Node n5 = new Node("T5", new ArrayList<>());
-        Node n6 = new Node("T6", List.of("CommandG"));
-        Node n7 = new Node("T7", List.of("CommandH", "CommandI","CommandJ"));
+        MakefileParser parser = new MakefileParser();
+        long parserStartTime = System.nanoTime();
+        Map<Node,List<Node>> graph = parser.processFile("./scheduler/Makefile");
+        long parserEndTime = System.nanoTime();
+        long parserDuration = (parserStartTime - parserEndTime - latency0) / 1_000_000;
+        System.out.println("Parser Execution time: " + parserDuration + " ms");
+        System.out.println("************* Starting Scheduler now *****************");
 
-        Map<Node, List<Node>> dependencies = new HashMap<>();
-        dependencies.put(n1, List.of(n2, n3,n4)); // n1 -> n2, n3 and n4
-        dependencies.put(n3, List.of(n5,n6)); // n3 -> n5 et n6
-        dependencies.put(n2, List.of(n7)); // n2 -> n7
-        dependencies.put(n4, List.of(n7)); // n4 -> n7
-        dependencies.put(n5, List.of(n7)); // n5 -> n7
-        dependencies.put(n6, new ArrayList<>()); // n6 -> n7
-        dependencies.put(n7, new ArrayList<>()); // n7 depends on nothing
-
-        for (Map.Entry<Node, List<Node>> entry : dependencies.entrySet()) {
+        for (Map.Entry<Node, List<Node>> entry : graph.entrySet()) {
             scheduler.addNode(entry.getKey(), entry.getValue());
         }
         scheduler.executeTasks();
+        long schedulerEndTime = System.nanoTime();
+        long schedulerDuration = (schedulerEndTime - schedulerStartTime - latency0) / 1_000_000;;
+        try {
+            fileWriter = new FileWriter("scheduler_results.csv", true);
+            fileWriter.write(schedulerDuration + "\n");
+            System.out.println("Scheduler Execution time: " + schedulerDuration + " ms");
+            fileWriter.write((RetrieveHosts.hosts).size()+","+schedulerDuration + "\n");  
+            System.out.println("HELLO");
+        } catch (Exception e) {
+            System.out.println("Master exception In Message Transmission : " + e);
+        } finally {
+            if (fileWriter != null) {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing FileWriter: " + e);
+                }
+            }
+        }
+        logger.saveRecordsToCSV("file_transfers.csv");
     }
 }
