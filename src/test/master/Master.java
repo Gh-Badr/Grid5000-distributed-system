@@ -26,19 +26,25 @@ public class Master {
   private static void getMessage(String message, String host) {
     FileWriter fileWriter = null;
     long startTime0 = System.nanoTime();
+    String simulateVariableAffect = "a";
     long endTime0 = System.nanoTime();
     long latency0 = endTime0 - startTime0;
     try {
+
+      long registerStartTime = System.nanoTime();
       PingPongInterface stub = (PingPongInterface) Naming.lookup("rmi://" + host + ":3000/PingPongObject");
-      long startTime = System.nanoTime();
+      long registerEndTime = System.nanoTime();
+      long registerLatency = registerEndTime - registerStartTime - latency0;
+      
+      long pingStartTime = System.nanoTime();
       String response = stub.ping(message, host);
-      long endTime = System.nanoTime();
-      long latency = endTime - startTime - latency0;
+      long pingEndTime = System.nanoTime();
+      long pingLatency = pingEndTime - pingStartTime - latency0;
       // Écriture dans le fichier CSV
       fileWriter = new FileWriter("latency_optimized_results.csv", true); // 'true' pour append au fichier
-      fileWriter.write(host + "," + latency + "\n"); // Format CSV : host,latency
+      fileWriter.write(host + "," + registerLatency + "," + pingLatency + "\n"); // Format CSV : host,registerLatency,pingLatency
       System.out.println("Response => " + response);
-      System.out.println("Latency: " + latency + " nanoseconds");
+      System.out.println("pingLatency: " + pingLatency + " nanoseconds");
     } catch (Exception e) {
       System.out.println("Master exception In Message Transmission : " + e);
     } finally {
