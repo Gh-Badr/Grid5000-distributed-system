@@ -14,8 +14,9 @@ with open(csv_file_path, 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         villes.append(row['Ville'])
-        moyennes_arg1.append(float(row['Moyenne du Premier Argument']))
-        moyennes_arg2.append(float(row['Moyenne du Deuxième Argument']))
+        # Convertir les valeurs de nanosecondes en millisecondes
+        moyennes_arg1.append(float(row['Moyenne du Premier Argument']) / 1e6)
+        moyennes_arg2.append(float(row['Moyenne du Deuxième Argument']) / 1e6)
 
 # Largeur des barres
 bar_width = 0.35
@@ -29,7 +30,7 @@ bar1 = ax1.bar(index - bar_width/2, moyennes_arg1, bar_width, label='Moyenne du 
 
 # Configuration du premier axe des abscisses
 ax1.set_xlabel('Villes')
-ax1.set_ylabel('Moyenne du Premier Argument', color='tab:blue')
+ax1.set_ylabel('Moyenne du Premier Argument (ms)', color='tab:blue')
 ax1.tick_params(axis='y', labelcolor='tab:blue')
 ax1.set_xticks(index)
 ax1.set_xticklabels(villes, rotation=45, ha='right')
@@ -42,7 +43,7 @@ ax2 = ax1.twinx()
 bar2 = ax2.bar(index + bar_width/2, moyennes_arg2, bar_width, label='Moyenne du Deuxième Argument', color='tab:red')
 
 # Configuration du deuxième axe des abscisses
-ax2.set_ylabel('Moyenne du Deuxième Argument', color='tab:red')
+ax2.set_ylabel('Moyenne du Deuxième Argument (ms)', color='tab:red')
 ax2.tick_params(axis='y', labelcolor='tab:red')
 
 # Ajuster l'échelle pour une meilleure visibilité
