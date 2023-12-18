@@ -4,6 +4,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface PingPongInterface extends Remote {
-    String ping(String command, String host) throws RemoteException;
     int executeCommand(String command) throws RemoteException;
 }

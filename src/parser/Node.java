@@ -5,8 +5,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
-// import java.util.concurrent.locks.Lock;
-// import java.util.concurrent.locks.ReentrantLock;
 
 import network.master.Master;
 import hosts.*;
@@ -14,8 +12,6 @@ import scheduler.LocalScheduler;
 
 
 public class Node {
-
-    // private static final Lock lock = new ReentrantLock();
 
     private String nodeName;
     private List<String> commands;
@@ -46,19 +42,16 @@ public class Node {
 
                 String[] arguments=new String[0];
                 Host thisHost=null;
-                List<Host> hosts = new ArrayList<>();
-                Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE"});
+                Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", "uniq $OAR_NODEFILE | awk 'NR<2'"});
 
 
                 // Capture the output
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                String line;
-                // Read each line and create Host objects
-                while ((line = reader.readLine()) != null) {
-                    hosts.add(new Host(line.trim()));
-                }
-//                System.out.println("Master Nammmmme : " + hosts.get(0).hostname);
+                // get master host
+                Host master = new Host(reader.readLine().trim());
+
+                
 
                 int n = (RetrieveHosts.hosts).size();
                 int i = n;
@@ -87,9 +80,7 @@ public class Node {
                     }
                 }
 
-                // Node.lock.unlock();
-
-                int responseCode = Master.master(arguments,hosts.get(0).hostname,this);
+                int responseCode = Master.master(arguments,master.hostname,this);
 
                 if(responseCode==0){
                     thisHost.status = HostStatus.FREE;

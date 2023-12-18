@@ -14,11 +14,6 @@ public class PingPongImpl extends UnicastRemoteObject implements PingPongInterfa
     }
 
     @Override
-    public String ping(String command, String host) throws RemoteException {
-        return "Node " + host + " received: " + command;
-    }
-
-    @Override
     public int executeCommand(String command) throws RemoteException {
         try {
             Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", command});

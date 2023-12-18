@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.rmi.Naming;
 import java.util.List;
 
-import static hosts.RetrieveHosts.getMasterName;
-
 
 public class Master {
 
@@ -54,39 +52,9 @@ public class Master {
         return exitCode;
     }
 
-    private static void getMessage(String command, String host) {
-        FileWriter fileWriter = null;
-        long startTime0 = System.nanoTime();
-        long endTime0 = System.nanoTime();
-        long latency0 = endTime0 - startTime0;
-        try {
-            PingPongInterface stub = (PingPongInterface) Naming.lookup("rmi://"+host+":3000/PingPongObject");
-            long startTime = System.nanoTime();
-            String response = stub.ping(command,host);
-            long endTime = System.nanoTime();
-            long latency = endTime - startTime - latency0;
-            // Écriture dans le fichier CSV
-            fileWriter = new FileWriter("latency_optimized_results.csv", true); // 'true' pour append au fichier
-            fileWriter.write(host + "," + latency + "\n"); // Format CSV : host,latency
-            System.out.println("Response => " + response);
-            System.out.println("Latency: " + latency + " nanoseconds");
-        } catch (Exception e) {
-            System.out.println("Master exception In Message Transmission : " + e);
-        } finally {
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    System.out.println("Error closing FileWriter: " + e);
-                }
-            }
-        }
-    }
+    
     private static void sendFile(String source,String destination, String target){
 
-//            System.out.println("Sending " + source + " to " + destination + " using file "+target);
-//            String source = "petitprince-9.luxembourg.grid5000.fr:try.txt";
-//            String destination = "petitprince-11.luxembourg.grid5000.fr";
         long startTime0 = System.nanoTime();
         long endTime0 = System.nanoTime();
         long latency0 = endTime0 - startTime0;
@@ -110,6 +78,7 @@ public class Master {
         System.out.println("File Sending Execution time : " + fileSendingDuration + " ms  for file : " +target);
         logger.addRecord(target,destination,fileSendingDuration);
     }
+
     public static boolean hasFileExtension(String fileName) {
         return fileName.contains(".") && fileName.lastIndexOf('.') > 0;
     }
@@ -148,7 +117,6 @@ public class Master {
     public static int master(String[] args,String masterName, Node node) {
 
         if (args.length > 1) {
-            getMessage(args[0],args[1]);
             return executeACommand(args[0],args[1],masterName,node);
         } else {
             System.out.println("Please provide command and a host as a command-line argument.");
