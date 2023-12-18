@@ -11,7 +11,6 @@ public class FileTransferRecord {
         this.duration = duration;
     }
 
-    // Getters
     public String getFileName() {
         return fileName;
     }
@@ -24,7 +23,6 @@ public class FileTransferRecord {
         return duration;
     }
 
-    // toString method for easy printing
     @Override
     public String toString() {
         return "FileTransferRecord{" +
