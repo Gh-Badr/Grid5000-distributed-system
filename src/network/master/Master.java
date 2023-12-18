@@ -5,6 +5,7 @@ import parser.*;
 import performance.FileTransferLogger;
 import scheduler.LocalScheduler;
 
+
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,8 +13,8 @@ import java.io.InputStreamReader;
 import java.rmi.Naming;
 import java.util.List;
 
-
 public class Master {
+
 
     public static FileTransferLogger logger = new FileTransferLogger();
 
@@ -34,6 +35,7 @@ public class Master {
             }
             exitCode = exec.executeCommand(command);
 
+
             // Print the result
             if (exitCode == 0) {
                 System.out.println("The File has been created.");
@@ -51,6 +53,7 @@ public class Master {
         }
         return exitCode;
     }
+
 
     
     private static void sendFile(String source,String destination, String target){
@@ -111,13 +114,16 @@ public class Master {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;
+
         }
     }
 
     public static int master(String[] args,String masterName, Node node) {
 
         if (args.length > 1) {
+
             return executeACommand(args[0],args[1],masterName,node);
+
         } else {
             System.out.println("Please provide command and a host as a command-line argument.");
             return -1; //pour tester
