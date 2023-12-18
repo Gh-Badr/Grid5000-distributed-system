@@ -1,0 +1,47 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:t todo:t |:t
+#+TITLE: CAHIER_DE_LABORATOIRE
+#+DATE: <2023-12-18>
+#+AUTHOR: GHAZAOUI Badr, MAROUANE Kamal, RIMAOUI Nabila, ZARKTOUNI Ismail
+#+EMAIL: 
+#+LANGUAGE: fr
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 25.2.2 (Org mode 9.1.14)
+
+Le but de ce document est de noter l'ensemble des informations
+pertinentes concernant votre projet. En effet, vous aurez probablement
+beaucoup d'essais, des erreurs et des tatonnements, répartis sur 3
+mois. Si vous ne les notez pas, vous aurez à les redécouvrir et les
+résoudre plusieurs fois.
+
+* Gestion du code
+  https://github.com/Gh-Badr/Grid5000-distributed-system.git
+* Déployement dans Grid 5000
+  Les commandes vous permettant de lancer votre application dans
+  grid5000.
+
+  *oarsub* to reserve nodes
+
+  *kadeploy3* to install a OS
+
+  *taktuk* with *ansible* or *puppet* to install resources on all nodes
+
+  probably akka cluster https://www.freecodecamp.org/news/how-to-make-a-simple-application-with-akka-cluster-506e20a725cf/
+
+* Plan d'expériences
+  Quels sont les mesures de performance que vous voulez avoir ? Donner
+  ici la liste des expériences précises à faire pour obtenir vos
+  mesures (paramètres, nombre et type de machines utilisés, fichiers
+  d'entrée, nombre de répétition, sorties)
+
+  Indiquer aussi le temps prévu (estimé) pour produire les données de
+  votre plan d'expérience.
+* Expérimentations
+  Les commandes vous permettant de lancer vos expérimentations de
+  manières automatiques.
+* Fabrication des courbes de performances
+  Les scripts pour traiter vos données et constuire les graphiques.
