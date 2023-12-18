@@ -38,7 +38,7 @@ public class Main {
         long latency = endTime - startTime - latency0;
         try {
             fileWriter = new FileWriter("scheduler_results.csv", true);
-            fileWriter.write(latency + "\n");  
+            fileWriter.write((RetrieveHosts.hosts).size()+","+latency + "\n");  
             System.out.println("HELLO");
         } catch (Exception e) {
             System.out.println("Master exception In Message Transmission : " + e);
