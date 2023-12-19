@@ -12,36 +12,19 @@
 #+EXCLUDE_TAGS: noexport
 #+CREATOR: Emacs 25.2.2 (Org mode 9.1.14)
 
-Le but de ce document est de noter l'ensemble des informations
-pertinentes concernant votre projet. En effet, vous aurez probablement
-beaucoup d'essais, des erreurs et des tatonnements, répartis sur 3
-mois. Si vous ne les notez pas, vous aurez à les redécouvrir et les
-résoudre plusieurs fois.
+Ce document note l'ensemble des informations pertinentes concernant notre projet. Il met en valeur nos d'essais, nos erreurs et nos tatonnements, répartis sur l'ensemble de la durée de mise en place du projet.
 
-* Gestion du code
-  https://github.com/Gh-Badr/Grid5000-distributed-system.git
+* Conception du code
+
 * Déployement dans Grid 5000
-  Les commandes vous permettant de lancer votre application dans
-  grid5000.
-
-  *oarsub* to reserve nodes
-
-  *kadeploy3* to install a OS
-
-  *taktuk* with *ansible* or *puppet* to install resources on all nodes
-
-  probably akka cluster https://www.freecodecamp.org/news/how-to-make-a-simple-application-with-akka-cluster-506e20a725cf/
-
+  
 * Plan d'expériences
-  Quels sont les mesures de performance que vous voulez avoir ? Donner
-  ici la liste des expériences précises à faire pour obtenir vos
-  mesures (paramètres, nombre et type de machines utilisés, fichiers
-  d'entrée, nombre de répétition, sorties)
 
-  Indiquer aussi le temps prévu (estimé) pour produire les données de
-  votre plan d'expérience.
+* Mesures de données brutes de la plateforme
+
+* Modélisation et prédictions des performances de l'éxecution
+
 * Expérimentations
-  Les commandes vous permettant de lancer vos expérimentations de
-  manières automatiques.
+  
 * Fabrication des courbes de performances
-  Les scripts pour traiter vos données et constuire les graphiques.
+
