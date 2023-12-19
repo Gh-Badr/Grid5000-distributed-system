@@ -15,6 +15,26 @@
 Ce document note l'ensemble des informations pertinentes concernant notre projet. Il met en valeur nos d'essais, nos erreurs et nos tatonnements, répartis sur l'ensemble de la durée de mise en place du projet.
 
 * Conception du code
+** Communication RMI de base
+- *SHA git:* =39fea68a79d1b32a9365b9e8d7e40c11e61aa24d=
+- *Date:* Nov 19, 2023
+- *Machines utilisées:* Réservation de 5 machines (par defaut) sur un seul site (choisi lors de l"execution du script)
+- *Script:*
+  - Configuration SSH nécessaires : 
+    1. Avoir un compte Grid5000 actif, avec une paire de clés configurée
+    2. Pour simplifier la connexion en une seule étape vers le frontend du site specifié, placer le fichier =config= dans le repertoire =~/.ssh=, avec le contenu suivant (remplacer <login> avec votre login Grid5000) :
+      : Host g5k
+      :   User <login>
+      :   Hostname access.grid5000.fr
+      :   ForwardAgent no
+      : Host *.g5k
+      :   User <login>
+      :   ProxyCommand ssh g5k -W "$(basename %h .g5k):%p"
+      :   ForwardAgent no
+  - Envoi de fichiers nécessaire : Se placer dans le repertoire racine du projet et executer la commande suivante =scp -r deploy/ src/network/ <site>.g5k:=, remplacer <site> avec le nom du site souhaité (lille par exemple)
+  - Se connecter au site choisi : =ssh <site>.g5k=
+  - Execution du script automatisé : executer =./automate.sh=
+- *Fichier resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
 * Déployement dans Grid 5000
   
