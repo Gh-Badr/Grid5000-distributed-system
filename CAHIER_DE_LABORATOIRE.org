@@ -33,10 +33,29 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
       :   ForwardAgent no
   - Envoi de fichiers nécessaire : Se placer dans le repertoire racine du projet et executer la commande suivante =scp -r deploy/ src/network/ <site>.g5k:=, remplacer <site> avec le nom du site souhaité (lille par exemple)
   - Se connecter au site choisi : =ssh <site>.g5k=
-  - Execution du script automatisé : executer =./automate.sh=
+  - Execution du script automatisé : executer =./deploy/automate.sh=
 - *Fichier resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
 * Déployement dans Grid 5000
+** Déploiement monosite
+- *SHA git:* =076de53eef9b8f54f6508ffe5c810df8e7a4cc69=
+- *Date:* Nov 21, 2023
+- *Machines utilisées:* Voir Section 1-1
+- *Script:*
+  - Configuration SSH nécessaires : Voir Section 1-1
+  - Envoi de fichiers nécessaire : Se placer dans le repertoire racine du projet et executer la commande suivante =scp -r deploy/ src/network/ src/scheduler/ src/parser/ src/hosts/ <site>.g5k:=, remplacer <site> avec le nom du site souhaité (lille par exemple)
+  - Se connecter au site choisi : =ssh <site>.g5k=
+  - Execution du script automatisé : executer =sed -i 's/\r//g' deploy/automate.sh= pour resoudre des conflits de formatage, puis =./deploy/automate.sh=
+- *Fichier resultats:* Voir Section 1-1
+
+** Déploiement inter-site
+- *SHA git:* =20e13998b65d5bab2d46f39bee1b5363d4de334e=
+- *Date:* Dec 13, 2023
+- *Machines utilisées:* Une seule machine (par defaut) de chaque site actif de Grid5000. Celle de lille est considérée master
+- *Script:*
+  - Configuration SSH nécessaires : Voir Section 1-1. Annuler l'utilisation de passphrase pour la connection ssh à Grid5000, celà peut causer des problèmes
+  - Execution du script automatisé : Se placer dans le repertoire racine du projet et executer la commande suivante =python API_deploy/run.py=
+- *Fichier resultats:* Sur chaque machine (sur tout le site) se trouve un fichier nommé =<site>_output.log=, contenant l'output des communications réseau lors de l'execution du make distribué 
   
 * Plan d'expériences
 
