@@ -15,7 +15,7 @@ def calculer_moyenne(ville_data):
     return moyenne_arg1, moyenne_arg2
 
 # Chemin complet du fichier d'entrée
-with open('C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/test-1/informations.txt', 'r') as fichier:
+with open('./test/pingpong/informations.txt', 'r') as fichier:
     lignes = fichier.readlines()
 
 # Initialisation du dictionnaire pour stocker les données par ville
@@ -38,7 +38,7 @@ moyennes_villes = {ville: calculer_moyenne(data) for ville, data in villes_data.
 villes_triees = sorted(moyennes_villes.items(), key=lambda x: x[1][1])
 
 # L'emplacement où on va enregistrer le fichier CSV de sortie
-output_path = 'C:/Users/s/Desktop/WHOLE/Grid5000-distributed-system/test/test-1/results_moyennes.csv'
+output_path = './test/pingpong/results_moyennes.csv'
 
 # Écrire les résultats triés dans un fichier CSV
 with open(output_path, 'w', newline='') as csvfile:

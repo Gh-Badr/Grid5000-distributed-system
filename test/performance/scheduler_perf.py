@@ -5,10 +5,10 @@ import pandas as pd
 file_path = './test/scheduler.csv'  # Make sure the file is in the same directory as your script
 
 # Read the CSV file
-data = pd.read_csv(file_path, header=None, names=["Nodes", "Duration_ns"])
+data = pd.read_csv(file_path, header=None, names=["Nodes", "Duration_ms"])
 
 # Convert duration from nanoseconds to seconds
-data["Duration_s"] = data["Duration_ns"] / 1e9
+data["Duration_s"] = data["Duration_ms"] / 1000
 
 # Plot
 plt.figure(figsize=(10, 6))
