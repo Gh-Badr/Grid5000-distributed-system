@@ -34,7 +34,7 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
   - Envoi de fichiers nécessaire : Se placer dans le repertoire racine du projet et executer la commande suivante =scp -r deploy/ src/network/ <site>.g5k:=, remplacer <site> avec le nom du site souhaité (lille par exemple)
   - Se connecter au site choisi : =ssh <site>.g5k=
   - Execution du script automatisé : executer =./deploy/automate.sh=
-- *Fichier resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
+- *Fichiers resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
 * Déployement dans Grid 5000
 ** Déploiement monosite
@@ -46,24 +46,56 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
   - Envoi de fichiers nécessaire : Se placer dans le repertoire racine du projet et executer la commande suivante =scp -r deploy/ src/network/ src/scheduler/ src/parser/ src/hosts/ <site>.g5k:=, remplacer <site> avec le nom du site souhaité (lille par exemple)
   - Se connecter au site choisi : =ssh <site>.g5k=
   - Execution du script automatisé : executer =sed -i 's/\r//g' deploy/automate.sh= pour resoudre des conflits de formatage, puis =./deploy/automate.sh=
-- *Fichier resultats:* Voir Section 1-1
+- *Fichiers resultats:* Voir Section 1-1
 
-** Déploiement inter-site
+** Déploiement inter-site : API python
 - *SHA git:* =20e13998b65d5bab2d46f39bee1b5363d4de334e=
 - *Date:* Dec 13, 2023
 - *Machines utilisées:* Une seule machine (par defaut) de chaque site actif de Grid5000. Celle de lille est considérée master
 - *Script:*
   - Configuration SSH nécessaires : Voir Section 1-1. Annuler l'utilisation de passphrase pour la connection ssh à Grid5000, celà peut causer des problèmes
   - Execution du script automatisé : Se placer dans le repertoire racine du projet et executer la commande suivante =python API_deploy/run.py=
-- *Fichier resultats:* Sur chaque machine (sur tout le site) se trouve un fichier nommé =<site>_output.log=, contenant l'output des communications réseau lors de l'execution du make distribué 
+- *Fichiers resultats:* Sur chaque machine (sur tout le site) se trouve un fichier nommé =<site>_output.log=, contenant l'output des communications réseau lors de l'execution du make distribué 
   
+** Adaptation de l'execution au Makefile 'premier' (version monosite)
+- *SHA git:* =17be006aad08d8a0db9ff655e46826ef9c89aaf1=
+- *Date:* Dec 17, 2023
+- *Machines utilisées:* 5 machines (par défaut) sur le site de nancy
+- *Script:*
+  - Configuration SSH nécessaires : Voir Section 1-1. Annuler l'utilisation de passphrase pour la connection ssh à Grid5000, celà peut causer des problèmes
+  - Execution du script automatisé : Se placer dans le repertoire racine du projet et executer la commande suivante =python API_deploy/run_single_site.py=
+- *Fichiers resultats:* Sur chaque machine (sur tout le site) se trouve un fichier nommé =<site>_output.log=, contenant l'output des communications réseau lors de l'execution du make distribué. Les fichier crés lors de l'execution du makefile sont aussi disponible sur tout le site (NFS commun)
+ 
+
 * Plan d'expériences
+- *Mesures de données brutes:*
+  - Mesure de latence (PingPong) dans la technologie Java RMI :
+    - Sur chaque site ==> Comparaison entre sites
+    - Inter-site ==> Choix de la meilleure distribution de l'architecture master-workers
+  - Mesure de latence réseau pour l'envoi de fichier :
+    - Latence NFS, scp et rsync ==> Comparaison et choix
+    - Déduction du débit d'envoi pour chaque technologie ==> Choix du meilleur
+- Utilisation des données brutes pour une simulation d'un modèle d'execution "théorique" de notre système : Monosite vs Inter-site
+- Mesure de performance de l'execution dans Grid5000 en fonction du nombre de machines reservées, et comparaison avec notre modèle
 
 * Mesures de données brutes de la plateforme
 
-* Modélisation et prédictions des performances de l'éxecution
+* Modélisation et prédictions des performances de l'éxecution : Makefile 'premier'
 
-* Expérimentations
-  
-* Fabrication des courbes de performances
+- *SHA git:* =31833747f7960a85cb9cc1df626e58ab9095de8f=
+- *Date:* Dec 18, 2023
+- *Script:* Se placer dans le repertoire racine du projet et executer la commande suivante =python test/model/lol.py=
+- *Fichiers resultats:* Un graphe representant l'evolution du temps d'execution prédit en fonction du nombre de machines réservées =model.png=
+
+
+
+* Expérimentations et fabrication des courbes de performances
+
+** Mesure de performance de l'execution : Monosite
+- *SHA git:* =15cde14e3d7a219977bc4003676ee27ed47f3921=
+- *Date:* Dec 18, 2023
+- *Script:* Se placer dans le repertoire racine du projet et executer la commande suivante =python API_deploy/run_single_site.py=, en faisant varier la variable =nodes_per_site=
+- *Fichiers resultats:* Un fichier =scheduler_results.csv= se crée à la fin de l'execution dans le noeud master. Ses données son copier dans le fichier =./test/scheduler.csv=, pour être traitées à la fin pour créer le graphe =./test/Figure_1.png=, qu'on compare à notre simulation précedente
+
+
 
