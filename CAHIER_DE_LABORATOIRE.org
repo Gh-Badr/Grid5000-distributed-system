@@ -80,6 +80,18 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
 
 * Mesures de données brutes de la plateforme
 
+** Mesure d’échange Ping-Pong
+
+- *SHA git:* =31833747f7960a85cb9cc1df626e58ab9095de8f=
+- *Date:* Dec 19, 2023
+- *Script:*   
+      - Se placer dans le répertoire racine du projet et exécuter la commande suivante =python test/pingpong/calculate.py=
+      - Ensuite, exécuter la commande suivante =python test/pingpong/graphe.py=
+- *Fichiers resultats:* 
+      - Un fichier =results_moyennes.csv= est généré à la fin de l'exécution de la première commande, et ce fichier sert d'entrée pour le script graphe.py
+      - Un graphe représentant le temps de réponse en fonction du site maître est généré après l'exécution de la deuxième commande
+
+
 * Modélisation et prédictions des performances de l'éxecution : Makefile 'premier'
 
 - *SHA git:* =31833747f7960a85cb9cc1df626e58ab9095de8f=
