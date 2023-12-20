@@ -36,6 +36,15 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
   - Execution du script automatisé : executer =./deploy/automate.sh=
 - *Fichiers resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
+** Ordonnanceur
+- *SHA git:* =7a1d065e1112d37330c0716562085ef278de508e=
+- *Date:* Dec 18, 2023
+- *Machines utilisées:* Dans notre configuration de système distribué, les sites de "Grenoble", "Nancy", "Rennes", "Nantes", "Luxembourg" et "Lyon" ont été sélectionnés en tant que travailleurs, avec un nœud réservé pour chacun de ces sites. Le site de "Lille" a été désigné comme le maître.
+- *Script:*
+  - Configuration SSH nécessaires : Voir Section 1-1. Annuler l'utilisation de passphrase pour la connection ssh à Grid5000, celà peut causer des problèmes
+  - Execution du script automatisé : Se placer dans le repertoire racine du projet et executer la commande suivante =python API_deploy/run.py=
+- *Fichiers resultats:* Sur chaque machine (sur tout le site) se trouve un fichier nommé =<site>_output.log=, contenant l'output des communications réseau lors de l'execution du make distribué et le transfert des fichiers nécessaires pour l'exécution de la commande dans les nœuds travailleurs (du maître vers le travailleur) et des fichiers créés après l'exécution des commandes (du travailleur vers le maître).
+
 * Déployement dans Grid 5000
 ** Déploiement monosite
 - *SHA git:* =076de53eef9b8f54f6508ffe5c810df8e7a4cc69=
