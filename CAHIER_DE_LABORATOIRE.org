@@ -37,14 +37,14 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
 - *Fichiers resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
 ** Parser
-SHA git: 21f3da918d438880b39fff4eb23900ab69be9fcd
-Date: Nov 21, 2023
-Machines utilisées: Utilisation d'une machine locale pour le développement et les tests.
-Compilation et Exécution :
+- *SHA git:* 21f3da918d438880b39fff4eb23900ab69be9fcd
+- *Date:* Nov 21, 2023
+- *Machines utilisées:* Utilisation d'une machine locale pour le développement et les tests.
+- *Compilation et Exécution :*
 Exécution du parser passant le chemin du Makefile en argument.
-Résultats :
-Les résultats de l'analyse lexicale et syntaxique sont affichés dans la console de sortie.
-Les logs d'erreurs et les avertissements, s'il y en a, sont également affichés dans la console.
+- *Résultats :*
+  - Les résultats de l'analyse lexicale et syntaxique sont affichés dans la console de sortie sous la forme d'un ensemble de couple clé/valeur où la clé est la cible avec ses commandes et la valeur est ses dependecies.
+  - Les logs d'erreurs et les avertissements, s'il y en a, sont également affichés dans la console.
 
 
 ** Ordonnanceur
