@@ -36,6 +36,17 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
   - Execution du script automatisé : executer =./deploy/automate.sh=
 - *Fichiers resultats:* L'output du master est stocké dans le fichier =master_output.log=, et l'output de l'un des nodes est stocké dans le fichier =node_output.log=, où figure les message de communication. Ces deux fichiers sont visible depuis n'importe quel machine du site (NFS commun)
 
+** Parser
+SHA git: 21f3da918d438880b39fff4eb23900ab69be9fcd
+Date: Nov 21, 2023
+Machines utilisées: Utilisation d'une machine locale pour le développement et les tests.
+Compilation et Exécution :
+Exécution du parser passant le chemin du Makefile en argument.
+Résultats :
+Les résultats de l'analyse lexicale et syntaxique sont affichés dans la console de sortie.
+Les logs d'erreurs et les avertissements, s'il y en a, sont également affichés dans la console.
+
+
 ** Ordonnanceur
 - *SHA git:* =7a1d065e1112d37330c0716562085ef278de508e=
 - *Date:* Dec 18, 2023
@@ -78,12 +89,14 @@ Ce document note l'ensemble des informations pertinentes concernant notre projet
 
 * Plan d'expériences
 - *Mesures de données brutes:*
+  - Mesure de la latence d'envoie de fichier avec NFS, SCP et RSYNC :
+    - Sur chaque site ==> Comparaison entre sites
+    - Inter-site ==> Choix du meilleur site à considerer comme master
+  - Mesure du débit lors de l'envoie de fichier avec les méthodes NFS, SCP et RSYNC :
+    - Sur chaque site ==> Définir la meilleur méthode pour l'envoie de fichier
   - Mesure de latence (PingPong) dans la technologie Java RMI :
     - Sur chaque site ==> Comparaison entre sites
     - Inter-site ==> Choix de la meilleure distribution de l'architecture master-workers
-  - Mesure de latence réseau pour l'envoi de fichier :
-    - Latence NFS, scp et rsync ==> Comparaison et choix
-    - Déduction du débit d'envoi pour chaque technologie ==> Choix du meilleur
 - Utilisation des données brutes pour une simulation d'un modèle d'execution "théorique" de notre système : Monosite vs Inter-site
 - Mesure de performance de l'execution dans Grid5000 en fonction du nombre de machines reservées, et comparaison avec notre modèle
 
